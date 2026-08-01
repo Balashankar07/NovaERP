@@ -1,0 +1,46 @@
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NovaERP.Application.Authentication.Commands.Login;
+using NovaERP.Application.Interfaces.Services;
+
+namespace NovaERP.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    private readonly ICurrentUserService _currentUser;
+
+    public AuthController(
+        IMediator mediator,
+        ICurrentUserService currentUser)
+    {
+        _mediator = mediator;
+        _currentUser = currentUser;
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginCommand command)
+    {
+        var result = await _mediator.Send(command);
+
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        return Ok(new
+        {
+            _currentUser.IsAuthenticated,
+            _currentUser.UserId,
+            _currentUser.Email,
+            _currentUser.Role,
+            _currentUser.CompanyId,
+            _currentUser.BranchId
+        });
+    }
+}
