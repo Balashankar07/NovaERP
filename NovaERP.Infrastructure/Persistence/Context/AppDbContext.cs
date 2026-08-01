@@ -13,6 +13,7 @@ namespace NovaERP.Infrastructure.Persistence.Context
         public DbSet<Role> Roles => Set<Role>();
 
         public DbSet<User> Users => Set<User>();
+        public DbSet<Company> Companies => Set<Company>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
