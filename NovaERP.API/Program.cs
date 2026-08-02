@@ -57,6 +57,10 @@ public class Program
             Log.Information("Registering JWT Authentication...");
             builder.Services.AddJwtAuthentication(builder.Configuration);
 
+            // CORS
+            Log.Information("Registering CORS...");
+            builder.Services.AddCorsPolicies();
+
             // Swagger
             Log.Information("Registering Swagger...");
             builder.Services.AddSwaggerDocumentation();
@@ -91,6 +95,9 @@ public class Program
 
             Log.Information("Enabling HTTPS Redirection...");
             app.UseHttpsRedirection();
+
+            Log.Information("Enabling CORS...");
+            app.UseCorsPolicies();
 
             Log.Information("Enabling Authentication...");
             app.UseAuthentication();
