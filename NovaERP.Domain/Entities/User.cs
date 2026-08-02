@@ -14,15 +14,15 @@ public class User : AuditableEntity
 
     public string PasswordHash { get; set; } = string.Empty;
 
+    // Required Foreign Keys
     public Guid CompanyId { get; set; }
 
     public Guid RoleId { get; set; }
 
     public bool IsActive { get; set; } = true;
 
-   
-
-    // Navigation Property
+    // Navigation Properties
     public Company Company { get; set; } = null!;
+
     public Role Role { get; set; } = null!;
 }

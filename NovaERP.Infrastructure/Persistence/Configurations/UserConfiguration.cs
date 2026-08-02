@@ -17,7 +17,8 @@ namespace NovaERP.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(x => x.LastName)
-                .HasMaxLength(100);
+                .HasMaxLength(100)
+                .IsRequired();
 
             builder.Property(x => x.Email)
                 .HasMaxLength(150)
@@ -26,11 +27,27 @@ namespace NovaERP.Infrastructure.Persistence.Configurations
             builder.HasIndex(x => x.Email)
                 .IsUnique();
 
+            builder.Property(x => x.Phone)
+                .HasMaxLength(20)
+                .IsRequired();
+
             builder.Property(x => x.PasswordHash)
                 .IsRequired();
 
             builder.Property(x => x.IsActive)
                 .HasDefaultValue(true);
+
+            // Company Relationship
+            builder.HasOne(x => x.Company)
+                .WithMany(c => c.Users)
+                .HasForeignKey(x => x.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Role Relationship
+            builder.HasOne(x => x.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(x => x.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

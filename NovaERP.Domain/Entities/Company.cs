@@ -1,9 +1,9 @@
-﻿namespace NovaERP.Domain.Entities;
+﻿using NovaERP.Domain.Common;
 
-public class Company
+namespace NovaERP.Domain.Entities;
+
+public class Company : AuditableEntity
 {
-    public Guid Id { get; set; }
-
     public string Name { get; set; } = string.Empty;
 
     public string Code { get; set; } = string.Empty;
@@ -28,7 +28,6 @@ public class Company
 
     public bool IsActive { get; set; } = true;
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    public DateTime? UpdatedAt { get; set; }
+    // Navigation Property
+    public ICollection<User> Users { get; set; } = new List<User>();
 }

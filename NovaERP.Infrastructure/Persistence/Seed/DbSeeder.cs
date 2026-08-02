@@ -11,6 +11,33 @@ public static class DbSeeder
     {
         await context.Database.MigrateAsync();
 
+        // ==========================
+        // Seed Company
+        // ==========================
+        if (!await context.Companies.AnyAsync())
+        {
+            var company = new Company
+            {
+                Name = "Nova Electronics",
+                Code = "NOVA",
+                Email = "info@novaerp.com",
+                Phone = "+91 9999999999",
+                Website = "https://novaerp.com",
+                Address = "Head Office",
+                City = "Kottayam",
+                State = "Kerala",
+                Country = "India",
+                PostalCode = "686001",
+                IsActive = true
+            };
+
+            await context.Companies.AddAsync(company);
+            await context.SaveChangesAsync();
+        }
+
+        // ==========================
+        // Seed Roles
+        // ==========================
         if (!await context.Roles.AnyAsync())
         {
             var roles = new List<Role>
@@ -28,8 +55,13 @@ public static class DbSeeder
             await context.SaveChangesAsync();
         }
 
+        // ==========================
+        // Seed Admin User
+        // ==========================
         if (!await context.Users.AnyAsync())
         {
+            var company = await context.Companies.FirstAsync();
+
             var superAdminRole = await context.Roles
                 .FirstAsync(r => r.Name == "Super Admin");
 
@@ -38,7 +70,9 @@ public static class DbSeeder
                 FirstName = "System",
                 LastName = "Administrator",
                 Email = "admin@novaerp.com",
+                Phone = "+91 9999999999",
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
+                CompanyId = company.Id,
                 RoleId = superAdminRole.Id,
                 IsActive = true
             };

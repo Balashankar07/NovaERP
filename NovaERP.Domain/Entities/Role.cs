@@ -12,5 +12,6 @@ namespace NovaERP.Domain.Entities
 
         // Navigation Property
         public ICollection<User> Users { get; set; } = new List<User>();
+
     }
 }
