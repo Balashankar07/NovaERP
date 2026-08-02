@@ -1,4 +1,4 @@
-﻿using BCrypt.Net;
+using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using NovaERP.Domain.Entities;
 using NovaERP.Infrastructure.Persistence.Context;
@@ -56,6 +56,28 @@ public static class DbSeeder
         }
 
         // ==========================
+        // Seed Permissions
+        // ==========================
+        if (!await context.Permissions.AnyAsync())
+        {
+            var permissions = new List<Permission>
+            {
+                new() { Name = "Permissions.Users.View", Description = "View Users", Module = "Users" },
+                new() { Name = "Permissions.Users.Create", Description = "Create Users", Module = "Users" },
+                new() { Name = "Permissions.Users.Edit", Description = "Edit Users", Module = "Users" },
+                new() { Name = "Permissions.Users.Delete", Description = "Delete Users", Module = "Users" },
+                new() { Name = "Permissions.Roles.View", Description = "View Roles", Module = "Roles" },
+                new() { Name = "Permissions.Roles.Create", Description = "Create Roles", Module = "Roles" },
+                new() { Name = "Permissions.Roles.Edit", Description = "Edit Roles", Module = "Roles" },
+                new() { Name = "Permissions.Roles.Delete", Description = "Delete Roles", Module = "Roles" },
+                new() { Name = "Permissions.Dashboard.View", Description = "View Dashboard", Module = "Dashboard" }
+            };
+
+            await context.Permissions.AddRangeAsync(permissions);
+            await context.SaveChangesAsync();
+        }
+
+        // ==========================
         // Seed Admin User
         // ==========================
         if (!await context.Users.AnyAsync())
@@ -78,6 +100,23 @@ public static class DbSeeder
             };
 
             await context.Users.AddAsync(admin);
+            await context.SaveChangesAsync();
+        }
+
+        // ==========================
+        // Seed Super Admin Role Permissions
+        // ==========================
+        var superAdmin = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Super Admin");
+        if (superAdmin != null && !await context.RolePermissions.AnyAsync(rp => rp.RoleId == superAdmin.Id))
+        {
+            var allPermissions = await context.Permissions.ToListAsync();
+            var rolePermissions = allPermissions.Select(p => new RolePermission
+            {
+                RoleId = superAdmin.Id,
+                PermissionId = p.Id
+            }).ToList();
+
+            await context.RolePermissions.AddRangeAsync(rolePermissions);
             await context.SaveChangesAsync();
         }
     }

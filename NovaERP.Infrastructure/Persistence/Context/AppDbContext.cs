@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NovaERP.Domain.Entities;
 
 namespace NovaERP.Infrastructure.Persistence.Context
@@ -14,6 +14,8 @@ namespace NovaERP.Infrastructure.Persistence.Context
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Company> Companies => Set<Company>();
+        public DbSet<Permission> Permissions => Set<Permission>();
+        public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

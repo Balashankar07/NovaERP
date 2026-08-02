@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +12,8 @@ using NovaERP.Infrastructure.Persistence.Context;
 using NovaERP.Infrastructure.Repositories;
 using NovaERP.Infrastructure.Services;
 using NovaERP.Application.Features.Roles.Services;
+using NovaERP.Application.Features.Dashboard;
+using NovaERP.Application.Features.Permissions.Services;
 namespace NovaERP.Infrastructure.DependencyInjection;
 
 public static class InfrastructureServiceRegistration
@@ -29,11 +31,15 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
+        services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
 
         // Service Registration
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IDashboardService, DashboardService>();
+        services.AddScoped<IPermissionService, PermissionService>();
 
         // JWT
         services.Configure<JwtSettings>(
