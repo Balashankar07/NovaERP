@@ -1,7 +1,8 @@
 ﻿using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Infrastructure.Persistence.Context;
+using NovaERP.Infrastructure.Repositories;
 
-namespace NovaERP.Infrastructure.Persistence.Repositories;
+namespace NovaERP.Infrastructure.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
@@ -11,6 +12,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IRoleRepository Roles { get; }
 
+    public ICompanyRepository Companies { get; }
+
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
@@ -18,10 +21,12 @@ public class UnitOfWork : IUnitOfWork
         Users = new UserRepository(context);
 
         Roles = new RoleRepository(context);
+
+        Companies = new CompanyRepository(context);
     }
 
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();
     }
-}
+}   

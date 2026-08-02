@@ -6,5 +6,7 @@ public interface IUnitOfWork
 
     IRoleRepository Roles { get; }
 
+    ICompanyRepository Companies { get; }
+
     Task<int> SaveChangesAsync();
 }
