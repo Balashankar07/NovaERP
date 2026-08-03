@@ -24,7 +24,7 @@ public class CompanyController : ControllerBase
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] string? sortOrder = null)
     {
         var companies = await _companyService.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder);
-        return Ok(companies);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", companies));
     }
 
     [HttpGet("{id:guid}")]
@@ -34,9 +34,9 @@ public class CompanyController : ControllerBase
         var company = await _companyService.GetByIdAsync(id);
 
         if (company == null)
-            return NotFound();
+            return NotFound(ApiResponse.ErrorResponse("Resource not found."));
 
-        return Ok(company);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", company));
     }
 
     [HttpPost]
@@ -48,7 +48,7 @@ public class CompanyController : ControllerBase
         return CreatedAtAction(
             nameof(GetById),
             new { id = company.Id },
-            company);
+            ApiResponse.SuccessResponse("Operation completed successfully.", company));
     }
 
     [HttpPut("{id:guid}")]
@@ -58,9 +58,9 @@ public class CompanyController : ControllerBase
         var company = await _companyService.UpdateAsync(id, dto);
 
         if (company == null)
-            return NotFound();
+            return NotFound(ApiResponse.ErrorResponse("Resource not found."));
 
-        return Ok(company);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", company));
     }
 
     [HttpDelete("{id:guid}")]
@@ -70,7 +70,7 @@ public class CompanyController : ControllerBase
         var deleted = await _companyService.DeleteAsync(id);
 
         if (!deleted)
-            return NotFound();
+            return NotFound(ApiResponse.ErrorResponse("Resource not found."));
 
         return NoContent();
     }

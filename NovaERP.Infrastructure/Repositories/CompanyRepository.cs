@@ -63,21 +63,21 @@ public class CompanyRepository : ICompanyRepository
             .FirstOrDefaultAsync(x => x.Code == code);
     }
 
-    public async Task AddAsync(Company company)
+    public Task AddAsync(Company company)
     {
-        await _context.Companies.AddAsync(company);
-        await _context.SaveChangesAsync();
+        _context.Companies.AddAsync(company);
+        return Task.CompletedTask;
     }
 
-    public async Task UpdateAsync(Company company)
+    public Task UpdateAsync(Company company)
     {
         _context.Companies.Update(company);
-        await _context.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 
-    public async Task DeleteAsync(Company company)
+    public Task DeleteAsync(Company company)
     {
         _context.Companies.Remove(company);
-        await _context.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 }

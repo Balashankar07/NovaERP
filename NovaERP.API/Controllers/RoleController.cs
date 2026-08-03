@@ -23,7 +23,7 @@ public class RoleController : ControllerBase
     [HasPermission("Roles.View")]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] string? sortOrder = null)
     {
-        return Ok(await _roleService.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder));
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", await _roleService.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder)));
     }
 
     [HttpGet("{id}")]
@@ -33,9 +33,9 @@ public class RoleController : ControllerBase
         var role = await _roleService.GetByIdAsync(id);
 
         if (role == null)
-            return NotFound();
+            return NotFound(ApiResponse.ErrorResponse("Resource not found."));
 
-        return Ok(role);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", role));
     }
 
     [HttpPost]
@@ -44,7 +44,10 @@ public class RoleController : ControllerBase
     {
         var role = await _roleService.CreateAsync(dto);
 
-        return CreatedAtAction(nameof(Get), new { id = role.Id }, role);
+        return CreatedAtAction(
+            nameof(Get),
+            new { id = role.Id },
+            ApiResponse.SuccessResponse("Operation completed successfully.", role));
     }
 
     [HttpPut("{id}")]

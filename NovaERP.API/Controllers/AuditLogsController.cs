@@ -22,7 +22,7 @@ public class AuditLogsController : ControllerBase
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] string? sortOrder = null)
     {
         var logs = await _auditLogService.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder);
-        return Ok(logs);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", logs));
     }
 
     [HttpGet("{id:guid}")]
@@ -30,15 +30,15 @@ public class AuditLogsController : ControllerBase
     {
         var log = await _auditLogService.GetByIdAsync(id);
         if (log == null)
-            return NotFound();
+            return NotFound(ApiResponse.ErrorResponse("Resource not found."));
 
-        return Ok(log);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", log));
     }
 
     [HttpGet("user/{userId:guid}")]
     public async Task<IActionResult> GetByUserId(Guid userId)
     {
         var logs = await _auditLogService.GetByUserIdAsync(userId);
-        return Ok(logs);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", logs));
     }
 }

@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NovaERP.API.Authorization;
@@ -22,6 +23,6 @@ public class DashboardController : ControllerBase
     public async Task<IActionResult> GetSummary()
     {
         var summary = await _dashboardService.GetSummaryAsync();
-        return Ok(summary);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", summary));
     }
 }

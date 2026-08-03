@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ public class AuthController : ControllerBase
     {
         var result = await _mediator.Send(command);
 
-        return Ok(result);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", result));
     }
 
     [Authorize]

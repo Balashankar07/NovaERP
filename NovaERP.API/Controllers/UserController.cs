@@ -23,7 +23,7 @@ public class UserController : ControllerBase
     [HasPermission("Users.View")]
     public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] string? sortOrder = null)
     {
-        return Ok(await _userService.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder));
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", await _userService.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder)));
     }
 
     [HttpGet("{id:guid}")]
@@ -33,9 +33,9 @@ public class UserController : ControllerBase
         var user = await _userService.GetByIdAsync(id);
 
         if (user == null)
-            return NotFound();
+            return NotFound(ApiResponse.ErrorResponse("Resource not found."));
 
-        return Ok(user);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", user));
     }
 
     [HttpPost]
@@ -44,9 +44,10 @@ public class UserController : ControllerBase
     {
         var user = await _userService.CreateAsync(dto);
 
-        return CreatedAtAction(nameof(Get),
+        return CreatedAtAction(
+            nameof(Get),
             new { id = user.Id },
-            user);
+            ApiResponse.SuccessResponse("Operation completed successfully.", user));
     }
 
     [HttpPut("{id:guid}")]

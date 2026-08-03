@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NovaERP.API.Authorization;
@@ -23,7 +24,7 @@ public class PermissionsController : ControllerBase
     public async Task<IActionResult> GetAllPermissions([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] string? sortOrder = null)
     {
         var permissions = await _permissionService.GetAllPermissionsAsync(pageNumber, pageSize, search, sortBy, sortOrder);
-        return Ok(permissions);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", permissions));
     }
 
     [HttpGet("role/{roleId}")]
@@ -31,7 +32,7 @@ public class PermissionsController : ControllerBase
     public async Task<IActionResult> GetRolePermissions(Guid roleId)
     {
         var permissions = await _permissionService.GetRolePermissionsAsync(roleId);
-        return Ok(permissions);
+        return Ok(ApiResponse.SuccessResponse("Operation completed successfully.", permissions));
     }
 
     [HttpPost("role/{roleId}")]
@@ -40,13 +41,13 @@ public class PermissionsController : ControllerBase
     {
         if (roleId != dto.RoleId)
         {
-            return BadRequest("Role ID in URL must match Role ID in body.");
+            return BadRequest(ApiResponse.ErrorResponse("Role ID in URL must match Role ID in body."));
         }
 
         try
         {
             await _permissionService.AssignPermissionsToRoleAsync(roleId, dto.PermissionIds);
-            return Ok();
+            return Ok(ApiResponse.SuccessResponse("Operation completed successfully."));
         }
         catch (KeyNotFoundException ex)
         {
