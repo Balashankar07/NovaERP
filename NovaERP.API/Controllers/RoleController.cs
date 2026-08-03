@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NovaERP.API.Authorization;
 using NovaERP.Application.Features.Roles.DTOs;
 using NovaERP.Application.Interfaces.Services;
 
@@ -18,12 +19,14 @@ public class RoleController : ControllerBase
     }
 
     [HttpGet]
+    [HasPermission("Roles.View")]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await _roleService.GetAllAsync());
     }
 
     [HttpGet("{id}")]
+    [HasPermission("Roles.View")]
     public async Task<IActionResult> Get(Guid id)
     {
         var role = await _roleService.GetByIdAsync(id);
@@ -35,6 +38,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
+    [HasPermission("Roles.Create")]
     public async Task<IActionResult> Create(CreateRoleDto dto)
     {
         var role = await _roleService.CreateAsync(dto);
@@ -43,6 +47,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [HasPermission("Roles.Update")]
     public async Task<IActionResult> Update(Guid id, UpdateRoleDto dto)
     {
         await _roleService.UpdateAsync(id, dto);
@@ -51,6 +56,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [HasPermission("Roles.Delete")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _roleService.DeleteAsync(id);

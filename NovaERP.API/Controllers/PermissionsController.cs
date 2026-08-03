@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NovaERP.API.Authorization;
 using NovaERP.Application.Features.Permissions.DTOs;
 using NovaERP.Application.Interfaces.Services;
 
@@ -18,6 +19,7 @@ public class PermissionsController : ControllerBase
     }
 
     [HttpGet]
+    [HasPermission("Permissions.View")]
     public async Task<IActionResult> GetAllPermissions()
     {
         var permissions = await _permissionService.GetAllPermissionsAsync();
@@ -25,6 +27,7 @@ public class PermissionsController : ControllerBase
     }
 
     [HttpGet("role/{roleId}")]
+    [HasPermission("Permissions.View")]
     public async Task<IActionResult> GetRolePermissions(Guid roleId)
     {
         var permissions = await _permissionService.GetRolePermissionsAsync(roleId);
@@ -32,6 +35,7 @@ public class PermissionsController : ControllerBase
     }
 
     [HttpPost("role/{roleId}")]
+    [HasPermission("Permissions.Assign")]
     public async Task<IActionResult> AssignPermissionsToRole(Guid roleId, [FromBody] RolePermissionDto dto)
     {
         if (roleId != dto.RoleId)

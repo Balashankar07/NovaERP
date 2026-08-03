@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NovaERP.API.Authorization;
 using NovaERP.Application.Features.Companies.DTOs;
 using NovaERP.Application.Interfaces.Services;
 
@@ -18,6 +19,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpGet]
+    [HasPermission("Companies.View")]
     public async Task<IActionResult> GetAll()
     {
         var companies = await _companyService.GetAllAsync();
@@ -25,6 +27,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
+    [HasPermission("Companies.View")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var company = await _companyService.GetByIdAsync(id);
@@ -36,6 +39,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPost]
+    [HasPermission("Companies.Create")]
     public async Task<IActionResult> Create(CreateCompanyDto dto)
     {
         var company = await _companyService.CreateAsync(dto);
@@ -47,6 +51,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [HasPermission("Companies.Update")]
     public async Task<IActionResult> Update(Guid id, UpdateCompanyDto dto)
     {
         var company = await _companyService.UpdateAsync(id, dto);
@@ -58,6 +63,7 @@ public class CompanyController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [HasPermission("Companies.Delete")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var deleted = await _companyService.DeleteAsync(id);

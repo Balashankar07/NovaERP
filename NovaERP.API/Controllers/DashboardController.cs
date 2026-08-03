@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NovaERP.API.Authorization;
 using NovaERP.Application.Interfaces.Services;
 
 namespace NovaERP.API.Controllers;
@@ -17,6 +18,7 @@ public class DashboardController : ControllerBase
     }
 
     [HttpGet]
+    [HasPermission("Dashboard.View")]
     public async Task<IActionResult> GetSummary()
     {
         var summary = await _dashboardService.GetSummaryAsync();

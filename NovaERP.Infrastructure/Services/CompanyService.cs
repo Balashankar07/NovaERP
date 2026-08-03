@@ -1,4 +1,4 @@
-﻿using NovaERP.Application.Features.Companies.DTOs;
+using NovaERP.Application.Features.Companies.DTOs;
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Application.Interfaces.Services;
 using NovaERP.Domain.Entities;
@@ -8,10 +8,12 @@ namespace NovaERP.Infrastructure.Services;
 public class CompanyService : ICompanyService
 {
     private readonly ICompanyRepository _companyRepository;
+    private readonly IAuditLogger _auditLogger;
 
-    public CompanyService(ICompanyRepository companyRepository)
+    public CompanyService(ICompanyRepository companyRepository, IAuditLogger auditLogger)
     {
         _companyRepository = companyRepository;
+        _auditLogger = auditLogger;
     }
 
     public async Task<List<CompanyDto>> GetAllAsync()
@@ -58,6 +60,8 @@ public class CompanyService : ICompanyService
 
         await _companyRepository.AddAsync(company);
 
+        await _auditLogger.LogAsync("Create", "Company", company.Id.ToString(), newValues: $"Code: {company.Code}, Name: {company.Name}");
+
         return MapToDto(company);
     }
 
@@ -83,6 +87,8 @@ public class CompanyService : ICompanyService
 
         await _companyRepository.UpdateAsync(company);
 
+        await _auditLogger.LogAsync("Update", "Company", company.Id.ToString());
+
         return MapToDto(company);
     }
 
@@ -94,6 +100,8 @@ public class CompanyService : ICompanyService
             return false;
 
         await _companyRepository.DeleteAsync(company);
+
+        await _auditLogger.LogAsync("Delete", "Company", company.Id.ToString());
 
         return true;
     }

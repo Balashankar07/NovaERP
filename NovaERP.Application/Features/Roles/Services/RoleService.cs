@@ -1,4 +1,4 @@
-﻿using NovaERP.Application.Features.Roles.DTOs;
+using NovaERP.Application.Features.Roles.DTOs;
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Application.Interfaces.Services;
 using NovaERP.Domain.Entities;
@@ -8,10 +8,12 @@ namespace NovaERP.Application.Features.Roles.Services;
 public class RoleService : IRoleService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAuditLogger _auditLogger;
 
-    public RoleService(IUnitOfWork unitOfWork)
+    public RoleService(IUnitOfWork unitOfWork, IAuditLogger auditLogger)
     {
         _unitOfWork = unitOfWork;
+        _auditLogger = auditLogger;
     }
 
     public async Task<IEnumerable<RoleDto>> GetAllAsync()
@@ -55,6 +57,8 @@ public class RoleService : IRoleService
         await _unitOfWork.Roles.AddAsync(role);
         await _unitOfWork.SaveChangesAsync();
 
+        await _auditLogger.LogAsync("Create", "Role", role.Id.ToString(), newValues: $"Name: {role.Name}");
+
         return new RoleDto
         {
             Id = role.Id,
@@ -79,6 +83,8 @@ public class RoleService : IRoleService
         _unitOfWork.Roles.Update(role);
 
         await _unitOfWork.SaveChangesAsync();
+
+        await _auditLogger.LogAsync("Update", "Role", role.Id.ToString());
     }
 
     public async Task DeleteAsync(Guid id)
@@ -91,5 +97,7 @@ public class RoleService : IRoleService
         _unitOfWork.Roles.Delete(role);
 
         await _unitOfWork.SaveChangesAsync();
+
+        await _auditLogger.LogAsync("Delete", "Role", role.Id.ToString());
     }
 }

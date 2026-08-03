@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NovaERP.Application.Features.Users.DTOs;
 using NovaERP.Application.Interfaces.Repositories;
@@ -11,13 +11,16 @@ public class UserService : IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IAuditLogger _auditLogger;
 
     public UserService(
         IUnitOfWork unitOfWork,
-        IPasswordHasher passwordHasher)
+        IPasswordHasher passwordHasher,
+        IAuditLogger auditLogger)
     {
         _unitOfWork = unitOfWork;
         _passwordHasher = passwordHasher;
+        _auditLogger = auditLogger;
     }
 
     public async Task<IEnumerable<UserDto>> GetAllAsync()
@@ -74,6 +77,8 @@ public class UserService : IUserService
         await _unitOfWork.Users.AddAsync(user);
         await _unitOfWork.SaveChangesAsync();
 
+        await _auditLogger.LogAsync("Create", "User", user.Id.ToString(), newValues: $"Email: {user.Email}, RoleId: {user.RoleId}");
+
         return new UserDto
         {
             Id = user.Id,
@@ -104,6 +109,8 @@ public class UserService : IUserService
 
         _unitOfWork.Users.Update(user);
         await _unitOfWork.SaveChangesAsync();
+
+        await _auditLogger.LogAsync("Update", "User", user.Id.ToString());
     }
 
     public async Task DeleteAsync(Guid id)
@@ -115,5 +122,7 @@ public class UserService : IUserService
 
         _unitOfWork.Users.Delete(user);
         await _unitOfWork.SaveChangesAsync();
+
+        await _auditLogger.LogAsync("Delete", "User", user.Id.ToString());
     }
 }

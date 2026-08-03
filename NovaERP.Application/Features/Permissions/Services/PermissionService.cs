@@ -8,10 +8,12 @@ namespace NovaERP.Application.Features.Permissions.Services
     public class PermissionService : IPermissionService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuditLogger _auditLogger;
 
-        public PermissionService(IUnitOfWork unitOfWork)
+        public PermissionService(IUnitOfWork unitOfWork, IAuditLogger auditLogger)
         {
             _unitOfWork = unitOfWork;
+            _auditLogger = auditLogger;
         }
 
         public async Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync()
@@ -77,6 +79,8 @@ namespace NovaERP.Application.Features.Permissions.Services
             }
 
             await _unitOfWork.SaveChangesAsync();
+
+            await _auditLogger.LogAsync("Update", "RolePermissions", roleId.ToString(), newValues: $"Permissions assigned: {string.Join(", ", permissionIds)}");
         }
     }
 }
