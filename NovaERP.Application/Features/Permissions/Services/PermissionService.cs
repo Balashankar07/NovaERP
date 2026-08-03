@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 using NovaERP.Application.Features.Permissions.DTOs;
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Application.Interfaces.Services;
@@ -16,28 +17,34 @@ namespace NovaERP.Application.Features.Permissions.Services
             _auditLogger = auditLogger;
         }
 
-        public async Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync()
+        public async Task<PagedResult<PermissionDto>> GetAllPermissionsAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null)
         {
-            var permissions = await _unitOfWork.Permissions.GetAllAsync();
-            return permissions.Select(p => new PermissionDto
+            var pagedResult = await _unitOfWork.Permissions.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder);
+        return new PagedResult<PermissionDto>
+        {
+            Items = pagedResult.Items.Select(p => new PermissionDto
             {
                 Id = p.Id,
                 Name = p.Name,
                 Description = p.Description,
                 Module = p.Module
-            });
+            }),
+            TotalCount = pagedResult.TotalCount,
+            PageNumber = pagedResult.PageNumber,
+            PageSize = pagedResult.PageSize
+        };
         }
 
         public async Task<IEnumerable<PermissionDto>> GetRolePermissionsAsync(Guid roleId)
         {
-            var allRolePermissions = await _unitOfWork.RolePermissions.GetAllAsync();
-            var rolePermissionIds = allRolePermissions
+            var allRolePermissions = await _unitOfWork.RolePermissions.GetAllAsync(1, int.MaxValue);
+            var rolePermissionIds = allRolePermissions.Items
                 .Where(rp => rp.RoleId == roleId)
                 .Select(rp => rp.PermissionId)
                 .ToList();
 
-            var allPermissions = await _unitOfWork.Permissions.GetAllAsync();
-            var permissions = allPermissions.Where(p => rolePermissionIds.Contains(p.Id));
+            var allPermissions = await _unitOfWork.Permissions.GetAllAsync(1, int.MaxValue);
+            var permissions = allPermissions.Items.Where(p => rolePermissionIds.Contains(p.Id));
 
             return permissions.Select(p => new PermissionDto
             {
@@ -58,8 +65,8 @@ namespace NovaERP.Application.Features.Permissions.Services
             }
 
             // Get existing role permissions
-            var allRolePermissions = await _unitOfWork.RolePermissions.GetAllAsync();
-            var existingRolePermissions = allRolePermissions.Where(rp => rp.RoleId == roleId).ToList();
+            var allRolePermissions = await _unitOfWork.RolePermissions.GetAllAsync(1, int.MaxValue);
+            var existingRolePermissions = allRolePermissions.Items.Where(rp => rp.RoleId == roleId).ToList();
 
             // Delete existing
             foreach (var rp in existingRolePermissions)

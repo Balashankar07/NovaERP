@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 using System;
 using System.Linq;
 using NovaERP.Application.Features.Users.DTOs;
@@ -23,11 +24,12 @@ public class UserService : IUserService
         _auditLogger = auditLogger;
     }
 
-    public async Task<IEnumerable<UserDto>> GetAllAsync()
+    public async Task<PagedResult<UserDto>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null)
     {
-        var users = await _unitOfWork.Users.GetAllAsync();
-
-        return users.Select(u => new UserDto
+        var pagedResult = await _unitOfWork.Users.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder);
+        return new PagedResult<UserDto>
+        {
+            Items = pagedResult.Items.Select(u => new UserDto
         {
             Id = u.Id,
             FirstName = u.FirstName,
@@ -37,7 +39,11 @@ public class UserService : IUserService
             CompanyId = u.CompanyId,
             RoleId = u.RoleId,
             IsActive = u.IsActive
-        });
+        }),
+            TotalCount = pagedResult.TotalCount,
+            PageNumber = pagedResult.PageNumber,
+            PageSize = pagedResult.PageSize
+        };
     }
 
     public async Task<UserDto?> GetByIdAsync(Guid id)

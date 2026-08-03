@@ -15,9 +15,41 @@ public class CompanyRepository : ICompanyRepository
         _context = context;
     }
 
-    public async Task<List<Company>> GetAllAsync()
+    public async Task<NovaERP.Application.Common.Models.PagedResult<Company>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null)
     {
-        return await _context.Companies.ToListAsync();
+        var query = _context.Companies.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query = query.Where(x => x.Name.Contains(search) || x.Code.Contains(search) || x.Email.Contains(search));
+        }
+
+        if (!string.IsNullOrWhiteSpace(sortBy))
+        {
+            bool isDesc = sortOrder?.Equals("desc", StringComparison.OrdinalIgnoreCase) ?? false;
+            query = sortBy.ToLower() switch
+            {
+                "name" => isDesc ? query.OrderByDescending(x => x.Name) : query.OrderBy(x => x.Name),
+                "code" => isDesc ? query.OrderByDescending(x => x.Code) : query.OrderBy(x => x.Code),
+                "email" => isDesc ? query.OrderByDescending(x => x.Email) : query.OrderBy(x => x.Email),
+                "createdat" => isDesc ? query.OrderByDescending(x => x.CreatedAt) : query.OrderBy(x => x.CreatedAt),
+                _ => isDesc ? query.OrderByDescending(x => x.Id) : query.OrderBy(x => x.Id)
+            };
+        }
+
+        pageNumber = pageNumber < 1 ? 1 : pageNumber;
+        pageSize = pageSize < 1 ? 10 : pageSize;
+
+        var totalCount = await query.CountAsync();
+        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new NovaERP.Application.Common.Models.PagedResult<Company>
+        {
+            Items = items,
+            TotalCount = totalCount,
+            PageNumber = pageNumber,
+            PageSize = pageSize
+        };
     }
 
     public async Task<Company?> GetByIdAsync(Guid id)

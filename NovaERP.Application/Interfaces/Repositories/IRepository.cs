@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 ﻿using NovaERP.Domain.Common;
 
 namespace NovaERP.Application.Interfaces.Repositories
@@ -7,7 +8,7 @@ namespace NovaERP.Application.Interfaces.Repositories
     {
         Task<T?> GetByIdAsync(Guid id);
 
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<PagedResult<T>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null);
 
         Task AddAsync(T entity);
 

@@ -16,11 +16,17 @@ public class CompanyService : ICompanyService
         _auditLogger = auditLogger;
     }
 
-    public async Task<List<CompanyDto>> GetAllAsync()
+    public async Task<NovaERP.Application.Common.Models.PagedResult<CompanyDto>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null)
     {
-        var companies = await _companyRepository.GetAllAsync();
+        var companies = await _companyRepository.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder);
 
-        return companies.Select(MapToDto).ToList();
+        return new NovaERP.Application.Common.Models.PagedResult<CompanyDto>
+        {
+            Items = companies.Items.Select(MapToDto).ToList(),
+            TotalCount = companies.TotalCount,
+            PageNumber = companies.PageNumber,
+            PageSize = companies.PageSize
+        };
     }
 
     public async Task<CompanyDto?> GetByIdAsync(Guid id)

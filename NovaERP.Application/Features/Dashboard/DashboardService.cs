@@ -21,9 +21,9 @@ public class DashboardService : IDashboardService
 
         return new DashboardDto
         {
-            TotalUsers     = users.Count(),
-            TotalRoles     = roles.Count(),
-            TotalCompanies = companies.Count()
+            TotalUsers     = users.TotalCount,
+            TotalRoles     = roles.TotalCount,
+            TotalCompanies = companies.TotalCount
         };
     }
 }

@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 using NovaERP.Application.Features.Roles.DTOs;
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Application.Interfaces.Services;
@@ -16,17 +17,22 @@ public class RoleService : IRoleService
         _auditLogger = auditLogger;
     }
 
-    public async Task<IEnumerable<RoleDto>> GetAllAsync()
+    public async Task<PagedResult<RoleDto>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null)
     {
-        var roles = await _unitOfWork.Roles.GetAllAsync();
-
-        return roles.Select(r => new RoleDto
+        var pagedResult = await _unitOfWork.Roles.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder);
+        return new PagedResult<RoleDto>
+        {
+            Items = pagedResult.Items.Select(r => new RoleDto
         {
             Id = r.Id,
             Name = r.Name,
             Description = r.Description,
             IsActive = r.IsActive
-        });
+        }),
+            TotalCount = pagedResult.TotalCount,
+            PageNumber = pagedResult.PageNumber,
+            PageSize = pagedResult.PageSize
+        };
     }
 
     public async Task<RoleDto?> GetByIdAsync(Guid id)

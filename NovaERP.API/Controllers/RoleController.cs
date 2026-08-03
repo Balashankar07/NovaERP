@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NovaERP.API.Authorization;
@@ -20,9 +21,9 @@ public class RoleController : ControllerBase
 
     [HttpGet]
     [HasPermission("Roles.View")]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] string? sortOrder = null)
     {
-        return Ok(await _roleService.GetAllAsync());
+        return Ok(await _roleService.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder));
     }
 
     [HttpGet("{id}")]

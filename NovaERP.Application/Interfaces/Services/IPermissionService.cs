@@ -4,7 +4,7 @@ namespace NovaERP.Application.Interfaces.Services
 {
     public interface IPermissionService
     {
-        Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync();
+        Task<NovaERP.Application.Common.Models.PagedResult<PermissionDto>> GetAllPermissionsAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null);
         Task<IEnumerable<PermissionDto>> GetRolePermissionsAsync(Guid roleId);
         Task AssignPermissionsToRoleAsync(Guid roleId, List<Guid> permissionIds);
     }

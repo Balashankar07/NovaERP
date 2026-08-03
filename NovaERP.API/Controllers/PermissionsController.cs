@@ -20,9 +20,9 @@ public class PermissionsController : ControllerBase
 
     [HttpGet]
     [HasPermission("Permissions.View")]
-    public async Task<IActionResult> GetAllPermissions()
+    public async Task<IActionResult> GetAllPermissions([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] string? sortOrder = null)
     {
-        var permissions = await _permissionService.GetAllPermissionsAsync();
+        var permissions = await _permissionService.GetAllPermissionsAsync(pageNumber, pageSize, search, sortBy, sortOrder);
         return Ok(permissions);
     }
 

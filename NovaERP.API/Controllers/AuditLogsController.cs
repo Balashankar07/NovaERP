@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NovaERP.Application.Features.AuditLogs.DTOs;
@@ -18,9 +19,9 @@ public class AuditLogsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] string? sortOrder = null)
     {
-        var logs = await _auditLogService.GetAllAsync();
+        var logs = await _auditLogService.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder);
         return Ok(logs);
     }
 

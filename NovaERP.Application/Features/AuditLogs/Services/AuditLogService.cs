@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Models;
 using NovaERP.Application.Features.AuditLogs.DTOs;
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Application.Interfaces.Services;
@@ -13,10 +14,16 @@ public class AuditLogService : IAuditLogService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<AuditLogDto>> GetAllAsync()
+    public async Task<PagedResult<AuditLogDto>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null)
     {
-        var logs = await _unitOfWork.AuditLogs.GetAllAsync();
-        return logs.Select(MapToDto).OrderByDescending(x => x.Timestamp);
+        var pagedResult = await _unitOfWork.AuditLogs.GetAllAsync(pageNumber, pageSize, search, sortBy, sortOrder);
+        return new PagedResult<AuditLogDto>
+        {
+            Items = pagedResult.Items.Select(MapToDto).OrderByDescending(x => x.Timestamp),
+            TotalCount = pagedResult.TotalCount,
+            PageNumber = pagedResult.PageNumber,
+            PageSize = pagedResult.PageSize
+        };
     }
 
     public async Task<AuditLogDto?> GetByIdAsync(Guid id)
@@ -27,8 +34,8 @@ public class AuditLogService : IAuditLogService
 
     public async Task<IEnumerable<AuditLogDto>> GetByUserIdAsync(Guid userId)
     {
-        var allLogs = await _unitOfWork.AuditLogs.GetAllAsync();
-        var userLogs = allLogs.Where(l => l.UserId == userId).OrderByDescending(x => x.Timestamp);
+        var allLogs = await _unitOfWork.AuditLogs.GetAllAsync(1, int.MaxValue);
+        var userLogs = allLogs.Items.Where(l => l.UserId == userId).OrderByDescending(x => x.Timestamp);
         return userLogs.Select(MapToDto);
     }
 

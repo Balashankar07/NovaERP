@@ -1,10 +1,10 @@
-﻿using NovaERP.Application.Features.Companies.DTOs;
+using NovaERP.Application.Features.Companies.DTOs;
 
 namespace NovaERP.Application.Interfaces.Services;
 
 public interface ICompanyService
 {
-    Task<List<CompanyDto>> GetAllAsync();
+    Task<NovaERP.Application.Common.Models.PagedResult<CompanyDto>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null);
 
     Task<CompanyDto?> GetByIdAsync(Guid id);
 

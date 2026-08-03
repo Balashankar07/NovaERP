@@ -1,10 +1,11 @@
+using NovaERP.Application.Common.Models;
 ﻿using NovaERP.Application.Features.Roles.DTOs;
 
 namespace NovaERP.Application.Interfaces.Services;
 
 public interface IRoleService
 {
-    Task<IEnumerable<RoleDto>> GetAllAsync();
+    Task<PagedResult<RoleDto>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null);
 
     Task<RoleDto?> GetByIdAsync(Guid id);
 

@@ -52,8 +52,8 @@ public class CurrentUserPermissionService : ICurrentUserPermissionService
         var roleId = user.RoleId;
 
         // 2. Load all RolePermissions for that role
-        var allRolePermissions = await _unitOfWork.RolePermissions.GetAllAsync();
-        var permissionIds = allRolePermissions
+        var allRolePermissions = await _unitOfWork.RolePermissions.GetAllAsync(1, int.MaxValue);
+        var permissionIds = allRolePermissions.Items
             .Where(rp => rp.RoleId == roleId)
             .Select(rp => rp.PermissionId)
             .ToHashSet();
@@ -66,8 +66,8 @@ public class CurrentUserPermissionService : ICurrentUserPermissionService
         }
 
         // 3. Load all permissions and check by name
-        var allPermissions = await _unitOfWork.Permissions.GetAllAsync();
-        var hasPermission = allPermissions
+        var allPermissions = await _unitOfWork.Permissions.GetAllAsync(1, int.MaxValue);
+        var hasPermission = allPermissions.Items
             .Any(p => permissionIds.Contains(p.Id)
                    && string.Equals(p.Name, permissionName, StringComparison.OrdinalIgnoreCase));
 
