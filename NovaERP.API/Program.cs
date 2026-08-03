@@ -57,6 +57,10 @@ public class Program
             Log.Information("Registering JWT Authentication...");
             builder.Services.AddJwtAuthentication(builder.Configuration);
 
+            // Permission Authorization Engine
+            Log.Information("Registering Permission Authorization Engine...");
+            builder.Services.AddPermissionAuthorization();
+
             // CORS
             Log.Information("Registering CORS...");
             builder.Services.AddCorsPolicies();

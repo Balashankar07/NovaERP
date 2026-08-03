@@ -12,5 +12,7 @@ public interface IUnitOfWork
 
     IRolePermissionRepository RolePermissions { get; }
 
+    IAuditLogRepository AuditLogs { get; }
+
     Task<int> SaveChangesAsync();
 }

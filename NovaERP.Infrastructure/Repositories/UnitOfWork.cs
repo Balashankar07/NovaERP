@@ -13,6 +13,7 @@ public class UnitOfWork : IUnitOfWork
     public ICompanyRepository Companies { get; private set; }
     public IPermissionRepository Permissions { get; private set; }
     public IRolePermissionRepository RolePermissions { get; private set; }
+    public IAuditLogRepository AuditLogs { get; private set; }
 
     public UnitOfWork(
         AppDbContext context,
@@ -20,7 +21,8 @@ public class UnitOfWork : IUnitOfWork
         IRoleRepository roleRepository,
         ICompanyRepository companyRepository,
         IPermissionRepository permissionRepository,
-        IRolePermissionRepository rolePermissionRepository)
+        IRolePermissionRepository rolePermissionRepository,
+        IAuditLogRepository auditLogRepository)
     {
         _context = context;
         Users = userRepository;
@@ -28,6 +30,7 @@ public class UnitOfWork : IUnitOfWork
         Companies = companyRepository;
         Permissions = permissionRepository;
         RolePermissions = rolePermissionRepository;
+        AuditLogs = auditLogRepository;
     }
 
     public async Task<int> SaveChangesAsync()

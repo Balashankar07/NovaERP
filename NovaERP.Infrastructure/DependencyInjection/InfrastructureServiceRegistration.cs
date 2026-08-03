@@ -14,6 +14,7 @@ using NovaERP.Infrastructure.Services;
 using NovaERP.Application.Features.Roles.Services;
 using NovaERP.Application.Features.Dashboard;
 using NovaERP.Application.Features.Permissions.Services;
+using NovaERP.Application.Features.AuditLogs.Services;
 namespace NovaERP.Infrastructure.DependencyInjection;
 
 public static class InfrastructureServiceRegistration
@@ -33,6 +34,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
+        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
         // Service Registration
         services.AddScoped<ICompanyService, CompanyService>();
@@ -40,6 +42,9 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IPermissionService, PermissionService>();
+        services.AddScoped<ICurrentUserPermissionService, CurrentUserPermissionService>();
+        services.AddScoped<IAuditLogger, AuditLogger>();
+        services.AddScoped<IAuditLogService, AuditLogService>();
 
         // JWT
         services.Configure<JwtSettings>(
