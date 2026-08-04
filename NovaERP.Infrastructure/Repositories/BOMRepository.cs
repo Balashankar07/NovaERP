@@ -83,4 +83,15 @@ public class BOMRepository : IBOMRepository
         _context.BOMs.Remove(bom);
         return Task.CompletedTask;
     }
+
+    public async Task<BOM?> GetActiveByProductIdAsync(Guid productId)
+    {
+        return await _context.BOMs
+            .Include(x => x.Product)
+            .Include(x => x.BOMItems)
+                .ThenInclude(i => i.RawMaterialProduct)
+            .Include(x => x.BOMItems)
+                .ThenInclude(i => i.Unit)
+            .FirstOrDefaultAsync(x => x.ProductId == productId && x.IsActive);
+    }
 }

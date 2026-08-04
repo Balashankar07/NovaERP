@@ -37,6 +37,7 @@ public interface IUnitOfWork
 
     IInventoryRepository Inventories { get; }
     IInventoryTransactionRepository InventoryTransactions { get; }
+    IProductionPlanRepository ProductionPlans { get; }
 
     Task<int> SaveChangesAsync();
     

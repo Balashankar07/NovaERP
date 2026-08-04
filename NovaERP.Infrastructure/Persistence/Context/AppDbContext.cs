@@ -33,6 +33,8 @@ namespace NovaERP.Infrastructure.Persistence.Context
         public DbSet<WarehouseLocation> WarehouseLocations { get; set; } = null!;
         public DbSet<Inventory> Inventories { get; set; } = null!;
         public DbSet<InventoryTransaction> InventoryTransactions { get; set; } = null!;
+        public DbSet<ProductionPlan> ProductionPlans { get; set; } = null!;
+        public DbSet<ProductionRequirement> ProductionRequirements { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
