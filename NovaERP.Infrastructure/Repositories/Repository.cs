@@ -29,7 +29,7 @@ public class Repository<T> : IRepository<T>
         var query = _dbSet.AsQueryable();
 
         var totalCount = await query.CountAsync();
-        var items = await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        var items = await query.OrderBy(x => x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<T>
         {

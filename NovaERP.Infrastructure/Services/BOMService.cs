@@ -125,7 +125,7 @@ public class BOMService : IBOMService
         // Update items
         var existingItems = bom.BOMItems.ToList();
         
-        var dtoItemIds = dto.Items.Where(i => i.Id.HasValue).Select(i => i.Id.Value).ToList();
+        var dtoItemIds = dto.Items.Where(i => i.Id.HasValue).Select(i => i.Id!.Value).ToList();
         var itemsToRemove = existingItems.Where(i => !dtoItemIds.Contains(i.Id)).ToList();
         foreach (var item in itemsToRemove)
         {
