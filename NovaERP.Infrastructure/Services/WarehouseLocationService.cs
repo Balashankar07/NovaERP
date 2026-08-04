@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Exceptions;
 using NovaERP.Application.Common.Models;
 using NovaERP.Application.Features.WarehouseLocations.DTOs;
 using NovaERP.Application.Interfaces.Repositories;
@@ -55,13 +56,13 @@ public class WarehouseLocationService : IWarehouseLocationService
     {
         var warehouse = await _unitOfWork.Warehouses.GetByIdAsync(dto.WarehouseId);
         if (warehouse == null)
-            throw new Exception("Warehouse must exist before creating locations.");
+            throw new BadRequestException("Warehouse must exist before creating locations.");
 
         if (await _unitOfWork.WarehouseLocations.ExistsByCodeAsync(dto.WarehouseId, dto.LocationCode))
-            throw new Exception("LocationCode must be unique within a warehouse.");
+            throw new ConflictException("LocationCode must be unique within a warehouse.");
 
         if (await _unitOfWork.WarehouseLocations.ExistsByNameAsync(dto.WarehouseId, dto.LocationName))
-            throw new Exception("LocationName must be unique within a warehouse.");
+            throw new ConflictException("LocationName must be unique within a warehouse.");
 
         var location = new WarehouseLocation
         {
@@ -96,7 +97,7 @@ public class WarehouseLocationService : IWarehouseLocationService
         if (location.LocationName != dto.LocationName)
         {
             if (await _unitOfWork.WarehouseLocations.ExistsByNameAsync(location.WarehouseId, dto.LocationName))
-                throw new Exception("LocationName must be unique within a warehouse.");
+                throw new ConflictException("LocationName must be unique within a warehouse.");
         }
 
         location.LocationName = dto.LocationName;
@@ -107,7 +108,7 @@ public class WarehouseLocationService : IWarehouseLocationService
         location.Description = dto.Description;
         
         if (warehouse != null && !warehouse.IsActive && dto.IsActive)
-            throw new Exception("Cannot activate location when its warehouse is inactive.");
+            throw new BadRequestException("Cannot activate location when its warehouse is inactive.");
 
         location.IsActive = dto.IsActive;
 

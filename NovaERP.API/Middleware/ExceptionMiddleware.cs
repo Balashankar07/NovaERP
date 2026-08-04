@@ -1,7 +1,8 @@
-﻿using System.Net;
+using System.Net;
 using System.Text.Json;
 
 using FluentValidation;
+using NovaERP.Application.Common.Exceptions;
 
 namespace NovaERP.API.Middleware;
 
@@ -57,6 +58,20 @@ public class ExceptionMiddleware
                 response.Success = false;
                 response.Message = "Unauthorized";
 
+                break;
+
+            case BadRequestException badRequestEx:
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                response.StatusCode = 400;
+                response.Success = false;
+                response.Message = badRequestEx.Message;
+                break;
+
+            case ConflictException conflictEx:
+                context.Response.StatusCode = StatusCodes.Status409Conflict;
+                response.StatusCode = 409;
+                response.Success = false;
+                response.Message = conflictEx.Message;
                 break;
 
             case KeyNotFoundException:

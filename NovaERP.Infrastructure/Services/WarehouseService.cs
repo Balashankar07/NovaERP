@@ -1,3 +1,4 @@
+using NovaERP.Application.Common.Exceptions;
 using NovaERP.Application.Common.Models;
 using NovaERP.Application.Features.Warehouses.DTOs;
 using NovaERP.Application.Interfaces.Repositories;
@@ -38,12 +39,12 @@ public class WarehouseService : IWarehouseService
     public async Task<WarehouseDto> CreateAsync(CreateWarehouseDto dto)
     {
         if (await _unitOfWork.Warehouses.ExistsByCodeAsync(dto.WarehouseCode))
-            throw new Exception("WarehouseCode must be unique.");
+            throw new ConflictException("WarehouseCode must be unique.");
 
         if (dto.IsDefault)
         {
             if (await _unitOfWork.Warehouses.HasDefaultWarehouseAsync())
-                throw new Exception("Only one default warehouse is allowed.");
+                throw new ConflictException("Only one default warehouse is allowed.");
         }
         else
         {
@@ -84,11 +85,11 @@ public class WarehouseService : IWarehouseService
         if (dto.IsDefault && !warehouse.IsDefault)
         {
             if (await _unitOfWork.Warehouses.HasDefaultWarehouseAsync(warehouse.Id))
-                throw new Exception("Only one default warehouse is allowed.");
+                throw new ConflictException("Only one default warehouse is allowed.");
         }
         else if (!dto.IsDefault && warehouse.IsDefault)
         {
-            throw new Exception("Cannot un-default a warehouse. Set another warehouse as default first (not supported directly) or leave this one as default.");
+            throw new BadRequestException("Cannot un-default a warehouse. Set another warehouse as default first (not supported directly) or leave this one as default.");
         }
 
         bool deactivated = warehouse.IsActive && !dto.IsActive;
@@ -131,10 +132,10 @@ public class WarehouseService : IWarehouseService
         if (warehouse == null) return false;
 
         if (warehouse.IsDefault)
-            throw new Exception("Default warehouse cannot be deleted.");
+            throw new BadRequestException("Default warehouse cannot be deleted.");
 
         if (await _unitOfWork.WarehouseLocations.AnyLocationsInWarehouseAsync(id))
-            throw new Exception("Warehouse with locations cannot be deleted.");
+            throw new BadRequestException("Warehouse with locations cannot be deleted.");
 
         _unitOfWork.Warehouses.Delete(warehouse);
         await _unitOfWork.SaveChangesAsync();

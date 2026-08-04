@@ -160,6 +160,30 @@ public static class DbSeeder
         }
 
         // ==========================
+        // Seed Employee User (for negative RBAC testing)
+        // ==========================
+        if (!await context.Users.AnyAsync(u => u.Email == "employee@novaerp.com"))
+        {
+            var company = await context.Companies.FirstAsync();
+            var employeeRole = await context.Roles.FirstAsync(r => r.Name == "Employee");
+
+            var emp = new User
+            {
+                FirstName = "Test",
+                LastName = "Employee",
+                Email = "employee@novaerp.com",
+                Phone = "+91 8888888888",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("Employee@123"),
+                CompanyId = company.Id,
+                RoleId = employeeRole.Id,
+                IsActive = true
+            };
+
+            await context.Users.AddAsync(emp);
+            await context.SaveChangesAsync();
+        }
+
+        // ==========================
         // Seed Super Admin Role Permissions
         // ==========================
         var superAdmin = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Super Admin");
