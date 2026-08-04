@@ -22,5 +22,9 @@ public interface IUnitOfWork
 
     IProductRepository Products { get; }
 
+    IBOMRepository BOMs { get; }
+
+    IBOMItemRepository BOMItems { get; }
+
     Task<int> SaveChangesAsync();
 }

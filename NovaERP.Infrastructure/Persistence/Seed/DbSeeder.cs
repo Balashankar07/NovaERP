@@ -88,7 +88,12 @@ public static class DbSeeder
             new() { Name = "Permissions.Units.View", Description = "View Units", Module = "Products" },
             new() { Name = "Permissions.Units.Create", Description = "Create Units", Module = "Products" },
             new() { Name = "Permissions.Units.Update", Description = "Edit Units", Module = "Products" },
-            new() { Name = "Permissions.Units.Delete", Description = "Delete Units", Module = "Products" }
+            new() { Name = "Permissions.Units.Delete", Description = "Delete Units", Module = "Products" },
+
+            new() { Name = "Permissions.BOMs.View", Description = "View BOMs", Module = "BOMs" },
+            new() { Name = "Permissions.BOMs.Create", Description = "Create BOMs", Module = "BOMs" },
+            new() { Name = "Permissions.BOMs.Update", Description = "Edit BOMs", Module = "BOMs" },
+            new() { Name = "Permissions.BOMs.Delete", Description = "Delete BOMs", Module = "BOMs" }
         };
 
         foreach (var p in permissions)

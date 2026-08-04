@@ -19,6 +19,8 @@ public class UnitOfWork : IUnitOfWork
     public IBrandRepository Brands { get; private set; }
     public IUnitRepository Units { get; private set; }
     public IProductRepository Products { get; private set; }
+    public IBOMRepository BOMs { get; private set; }
+    public IBOMItemRepository BOMItems { get; private set; }
 
     public UnitOfWork(
         AppDbContext context,
@@ -31,7 +33,9 @@ public class UnitOfWork : IUnitOfWork
         IProductCategoryRepository productCategoryRepository,
         IBrandRepository brandRepository,
         IUnitRepository unitRepository,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        IBOMRepository bomRepository,
+        IBOMItemRepository bomItemRepository)
     {
         _context = context;
         Users = userRepository;
@@ -45,6 +49,8 @@ public class UnitOfWork : IUnitOfWork
         Brands = brandRepository;
         Units = unitRepository;
         Products = productRepository;
+        BOMs = bomRepository;
+        BOMItems = bomItemRepository;
     }
 
     public async Task<int> SaveChangesAsync()

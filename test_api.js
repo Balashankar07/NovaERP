@@ -172,8 +172,50 @@ async function runTests() {
         res = await request('/Products?pageNumber=1&pageSize=10&search=Updated&sortBy=name&sortOrder=desc');
         console.log('GetAll (with filters):', res.status, `Count: ${res.data.data.items.length}`);
 
+        // 5.5 Test BOMs
+        console.log('\n--- Testing BOMs ---');
+        res = await request('/BOMs', 'POST', {
+            productId: productId,
+            version: 'v1.0',
+            description: 'First BOM version',
+            isActive: true,
+            items: [
+                {
+                    rawMaterialProductId: productId, // self reference just for test
+                    quantity: 5.0,
+                    unitId: unitId,
+                    wastePercentage: 2.5,
+                    remarks: 'Requires careful handling'
+                }
+            ]
+        });
+        console.log('Create BOM:', res.status, res.data?.message);
+        if (!res.data || !res.data.data) throw new Error('Create BOM failed: ' + JSON.stringify(res.data));
+        let bomId = res.data.data.id;
+
+        res = await request(`/BOMs/${bomId}`, 'PUT', {
+            version: 'v1.1',
+            description: 'Updated BOM version',
+            isActive: true,
+            items: [
+                {
+                    rawMaterialProductId: productId,
+                    quantity: 10.0,
+                    unitId: unitId,
+                    wastePercentage: 1.5,
+                    remarks: 'Updated remarks'
+                }
+            ]
+        });
+        console.log('Update BOM:', res.status, res.data.message);
+
+        res = await request('/BOMs?pageNumber=1&pageSize=10&search=v1.1&sortOrder=desc');
+        console.log('GetAll BOMs (with filters):', res.status, `Count: ${res.data.data.items.length}`);
+
         // 6. Delete Everything
         console.log('\n--- Testing Deletion ---');
+        res = await request(`/BOMs/${bomId}`, 'DELETE');
+        console.log('Delete BOM:', res.status);
         res = await request(`/Products/${productId}`, 'DELETE');
         console.log('Delete Product:', res.status);
         res = await request(`/ProductCategories/${categoryId}`, 'DELETE');
