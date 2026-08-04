@@ -35,6 +35,9 @@ public interface IUnitOfWork
     IWarehouseRepository Warehouses { get; }
     IWarehouseLocationRepository WarehouseLocations { get; }
 
+    IInventoryRepository Inventories { get; }
+    IInventoryTransactionRepository InventoryTransactions { get; }
+
     Task<int> SaveChangesAsync();
     
     Task BeginTransactionAsync();

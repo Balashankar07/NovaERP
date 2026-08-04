@@ -11,11 +11,13 @@ public class GoodsReceiptService : IGoodsReceiptService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAuditLogger _auditLogger;
+    private readonly IInventoryService _inventoryService;
 
-    public GoodsReceiptService(IUnitOfWork unitOfWork, IAuditLogger auditLogger)
+    public GoodsReceiptService(IUnitOfWork unitOfWork, IAuditLogger auditLogger, IInventoryService inventoryService)
     {
         _unitOfWork = unitOfWork;
         _auditLogger = auditLogger;
+        _inventoryService = inventoryService;
     }
 
     public async Task<PagedResult<GoodsReceiptDto>> GetAllAsync(int pageNumber = 1, int pageSize = 10, string? search = null, string? sortBy = null, string? sortOrder = null)
@@ -257,6 +259,7 @@ public class GoodsReceiptService : IGoodsReceiptService
             if (grn.Status == GoodsReceiptStatus.Completed)
             {
                 await CheckAndClosePurchaseOrderAsync(grn.PurchaseOrderId);
+                await _inventoryService.ProcessGoodsReceiptAsync(grn.Id, grn.ReceivedBy);
             }
 
             await _unitOfWork.CommitTransactionAsync();
@@ -291,6 +294,7 @@ public class GoodsReceiptService : IGoodsReceiptService
             await _auditLogger.LogAsync("StatusChange", "GoodsReceipt", grn.Id.ToString(), oldValues: "PartiallyReceived", newValues: "Completed");
 
             await CheckAndClosePurchaseOrderAsync(grn.PurchaseOrderId);
+            await _inventoryService.ProcessGoodsReceiptAsync(grn.Id, grn.ReceivedBy);
 
             await _unitOfWork.CommitTransactionAsync();
             return MapToDto(grn);

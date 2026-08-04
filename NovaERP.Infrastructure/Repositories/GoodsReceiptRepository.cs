@@ -76,6 +76,10 @@ public class GoodsReceiptRepository : Repository<GoodsReceipt>, IGoodsReceiptRep
                 _ => isDesc ? query.OrderByDescending(x => x.Id) : query.OrderBy(x => x.Id)
             };
         }
+        else
+        {
+            query = query.OrderByDescending(x => x.Id);
+        }
 
         pageNumber = pageNumber < 1 ? 1 : pageNumber;
         pageSize = pageSize < 1 ? 10 : pageSize;

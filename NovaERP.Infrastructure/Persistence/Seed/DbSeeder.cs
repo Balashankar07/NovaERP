@@ -121,7 +121,12 @@ public static class DbSeeder
             new() { Name = "Permissions.WarehouseLocations.View", Description = "View Warehouse Locations", Module = "WarehouseManagement" },
             new() { Name = "Permissions.WarehouseLocations.Create", Description = "Create Warehouse Locations", Module = "WarehouseManagement" },
             new() { Name = "Permissions.WarehouseLocations.Update", Description = "Edit Warehouse Locations", Module = "WarehouseManagement" },
-            new() { Name = "Permissions.WarehouseLocations.Delete", Description = "Delete Warehouse Locations", Module = "WarehouseManagement" }
+            new() { Name = "Permissions.WarehouseLocations.Delete", Description = "Delete Warehouse Locations", Module = "WarehouseManagement" },
+
+            new() { Name = "Permissions.Inventory.View", Description = "View Inventory", Module = "Inventory" },
+            new() { Name = "Permissions.Inventory.Adjust", Description = "Adjust Inventory", Module = "Inventory" },
+            new() { Name = "Permissions.Inventory.Transfer", Description = "Transfer Inventory", Module = "Inventory" },
+            new() { Name = "Permissions.Inventory.Transactions.View", Description = "View Inventory Transactions", Module = "Inventory" }
         };
 
         foreach (var p in permissions)

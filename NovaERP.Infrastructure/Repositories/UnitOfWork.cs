@@ -27,6 +27,8 @@ public class UnitOfWork : IUnitOfWork
     public IGoodsReceiptRepository GoodsReceipts { get; private set; }
     public IWarehouseRepository Warehouses { get; private set; }
     public IWarehouseLocationRepository WarehouseLocations { get; private set; }
+    public IInventoryRepository Inventories { get; private set; }
+    public IInventoryTransactionRepository InventoryTransactions { get; private set; }
 
     public UnitOfWork(
         AppDbContext context,
@@ -63,6 +65,8 @@ public class UnitOfWork : IUnitOfWork
         GoodsReceipts = new GoodsReceiptRepository(_context);
         Warehouses = new WarehouseRepository(_context);
         WarehouseLocations = new WarehouseLocationRepository(_context);
+        Inventories = new InventoryRepository(_context);
+        InventoryTransactions = new InventoryTransactionRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync()
