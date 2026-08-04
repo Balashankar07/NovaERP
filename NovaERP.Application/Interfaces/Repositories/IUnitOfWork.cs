@@ -26,5 +26,15 @@ public interface IUnitOfWork
 
     IBOMItemRepository BOMItems { get; }
 
+    ISupplierRepository Suppliers { get; }
+
+    IPurchaseOrderRepository PurchaseOrders { get; }
+
+    IGoodsReceiptRepository GoodsReceipts { get; }
+
     Task<int> SaveChangesAsync();
+    
+    Task BeginTransactionAsync();
+    Task CommitTransactionAsync();
+    Task RollbackTransactionAsync();
 }

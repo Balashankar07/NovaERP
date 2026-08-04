@@ -93,7 +93,27 @@ public static class DbSeeder
             new() { Name = "Permissions.BOMs.View", Description = "View BOMs", Module = "BOMs" },
             new() { Name = "Permissions.BOMs.Create", Description = "Create BOMs", Module = "BOMs" },
             new() { Name = "Permissions.BOMs.Update", Description = "Edit BOMs", Module = "BOMs" },
-            new() { Name = "Permissions.BOMs.Delete", Description = "Delete BOMs", Module = "BOMs" }
+            new() { Name = "Permissions.BOMs.Delete", Description = "Delete BOMs", Module = "BOMs" },
+
+            new() { Name = "Permissions.Suppliers.View", Description = "View Suppliers", Module = "Suppliers" },
+            new() { Name = "Permissions.Suppliers.Create", Description = "Create Suppliers", Module = "Suppliers" },
+            new() { Name = "Permissions.Suppliers.Update", Description = "Edit Suppliers", Module = "Suppliers" },
+            new() { Name = "Permissions.Suppliers.Delete", Description = "Delete Suppliers", Module = "Suppliers" },
+
+            new() { Name = "Permissions.PurchaseOrders.View", Description = "View Purchase Orders", Module = "PurchaseOrders" },
+            new() { Name = "Permissions.PurchaseOrders.Create", Description = "Create Purchase Orders", Module = "PurchaseOrders" },
+            new() { Name = "Permissions.PurchaseOrders.Update", Description = "Edit Purchase Orders", Module = "PurchaseOrders" },
+            new() { Name = "Permissions.PurchaseOrders.Delete", Description = "Delete Purchase Orders", Module = "PurchaseOrders" },
+            new() { Name = "Permissions.PurchaseOrders.Submit", Description = "Submit Purchase Orders", Module = "PurchaseOrders" },
+            new() { Name = "Permissions.PurchaseOrders.Approve", Description = "Approve Purchase Orders", Module = "PurchaseOrders" },
+            new() { Name = "Permissions.PurchaseOrders.Reject", Description = "Reject Purchase Orders", Module = "PurchaseOrders" },
+            new() { Name = "Permissions.GoodsReceipts.View", Description = "View Goods Receipts", Module = "GoodsReceipts" },
+            new() { Name = "Permissions.GoodsReceipts.Create", Description = "Create Goods Receipts", Module = "GoodsReceipts" },
+            new() { Name = "Permissions.GoodsReceipts.Update", Description = "Edit Goods Receipts", Module = "GoodsReceipts" },
+            new() { Name = "Permissions.GoodsReceipts.Delete", Description = "Delete Goods Receipts", Module = "GoodsReceipts" },
+            new() { Name = "Permissions.GoodsReceipts.Receive", Description = "Receive Goods Receipts", Module = "GoodsReceipts" },
+            new() { Name = "Permissions.GoodsReceipts.Complete", Description = "Complete Goods Receipts", Module = "GoodsReceipts" },
+            new() { Name = "Permissions.GoodsReceipts.Cancel", Description = "Cancel Goods Receipts", Module = "GoodsReceipts" }
         };
 
         foreach (var p in permissions)

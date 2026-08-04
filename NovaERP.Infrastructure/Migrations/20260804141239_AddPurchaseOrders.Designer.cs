@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NovaERP.Infrastructure.Persistence.Context;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NovaERP.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260804141239_AddPurchaseOrders")]
+    partial class AddPurchaseOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,112 +274,6 @@ namespace NovaERP.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Companies", (string)null);
-                });
-
-            modelBuilder.Entity("NovaERP.Domain.Entities.GoodsReceipt", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("GRNNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("PurchaseOrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ReceiptDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("ReceivedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("SupplierId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GRNNumber")
-                        .IsUnique();
-
-                    b.HasIndex("PurchaseOrderId");
-
-                    b.HasIndex("SupplierId");
-
-                    b.ToTable("GoodsReceipts");
-                });
-
-            modelBuilder.Entity("NovaERP.Domain.Entities.GoodsReceiptItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("GoodsReceiptId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("OrderedQuantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("PurchaseOrderItemId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("ReceivedQuantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("RejectedQuantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("UpdatedBy")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GoodsReceiptId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("PurchaseOrderItemId");
-
-                    b.ToTable("GoodsReceiptItems");
                 });
 
             modelBuilder.Entity("NovaERP.Domain.Entities.Permission", b =>
@@ -993,52 +890,6 @@ namespace NovaERP.Infrastructure.Migrations
                     b.Navigation("Unit");
                 });
 
-            modelBuilder.Entity("NovaERP.Domain.Entities.GoodsReceipt", b =>
-                {
-                    b.HasOne("NovaERP.Domain.Entities.PurchaseOrder", "PurchaseOrder")
-                        .WithMany()
-                        .HasForeignKey("PurchaseOrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("NovaERP.Domain.Entities.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("PurchaseOrder");
-
-                    b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("NovaERP.Domain.Entities.GoodsReceiptItem", b =>
-                {
-                    b.HasOne("NovaERP.Domain.Entities.GoodsReceipt", "GoodsReceipt")
-                        .WithMany("Items")
-                        .HasForeignKey("GoodsReceiptId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NovaERP.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("NovaERP.Domain.Entities.PurchaseOrderItem", "PurchaseOrderItem")
-                        .WithMany()
-                        .HasForeignKey("PurchaseOrderItemId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("GoodsReceipt");
-
-                    b.Navigation("Product");
-
-                    b.Navigation("PurchaseOrderItem");
-                });
-
             modelBuilder.Entity("NovaERP.Domain.Entities.Product", b =>
                 {
                     b.HasOne("NovaERP.Domain.Entities.Brand", "Brand")
@@ -1147,11 +998,6 @@ namespace NovaERP.Infrastructure.Migrations
             modelBuilder.Entity("NovaERP.Domain.Entities.Company", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("NovaERP.Domain.Entities.GoodsReceipt", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("NovaERP.Domain.Entities.Permission", b =>

@@ -21,9 +21,14 @@ namespace NovaERP.Infrastructure.Persistence.Context
         public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
         public DbSet<Brand> Brands => Set<Brand>();
         public DbSet<Unit> Units => Set<Unit>();
-        public DbSet<Product> Products => Set<Product>();
-        public DbSet<BOM> BOMs => Set<BOM>();
-        public DbSet<BOMItem> BOMItems => Set<BOMItem>();
+        public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<BOM> BOMs { get; set; } = null!;
+        public DbSet<BOMItem> BOMItems { get; set; } = null!;
+        public DbSet<Supplier> Suppliers { get; set; } = null!;
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; } = null!;
+        public DbSet<PurchaseOrderItem> PurchaseOrderItems { get; set; } = null!;
+        public DbSet<GoodsReceipt> GoodsReceipts { get; set; } = null!;
+        public DbSet<GoodsReceiptItem> GoodsReceiptItems { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

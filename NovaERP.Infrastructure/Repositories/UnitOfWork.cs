@@ -1,6 +1,7 @@
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Infrastructure.Persistence.Context;
 using NovaERP.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace NovaERP.Infrastructure.Repositories;
 
@@ -21,6 +22,9 @@ public class UnitOfWork : IUnitOfWork
     public IProductRepository Products { get; private set; }
     public IBOMRepository BOMs { get; private set; }
     public IBOMItemRepository BOMItems { get; private set; }
+    public ISupplierRepository Suppliers { get; private set; }
+    public IPurchaseOrderRepository PurchaseOrders { get; private set; }
+    public IGoodsReceiptRepository GoodsReceipts { get; private set; }
 
     public UnitOfWork(
         AppDbContext context,
@@ -35,7 +39,8 @@ public class UnitOfWork : IUnitOfWork
         IUnitRepository unitRepository,
         IProductRepository productRepository,
         IBOMRepository bomRepository,
-        IBOMItemRepository bomItemRepository)
+        IBOMItemRepository bomItemRepository,
+        ISupplierRepository supplierRepository)
     {
         _context = context;
         Users = userRepository;
@@ -49,12 +54,36 @@ public class UnitOfWork : IUnitOfWork
         Brands = brandRepository;
         Units = unitRepository;
         Products = productRepository;
-        BOMs = bomRepository;
-        BOMItems = bomItemRepository;
+        BOMs = new BOMRepository(_context);
+        BOMItems = new BOMItemRepository(_context);
+        Suppliers = new SupplierRepository(_context);
+        PurchaseOrders = new PurchaseOrderRepository(_context);
+        GoodsReceipts = new GoodsReceiptRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();
+    }
+
+    public async Task BeginTransactionAsync()
+    {
+        await _context.Database.BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
+    }
+
+    public async Task CommitTransactionAsync()
+    {
+        if (_context.Database.CurrentTransaction != null)
+        {
+            await _context.Database.CurrentTransaction.CommitAsync();
+        }
+    }
+
+    public async Task RollbackTransactionAsync()
+    {
+        if (_context.Database.CurrentTransaction != null)
+        {
+            await _context.Database.CurrentTransaction.RollbackAsync();
+        }
     }
 }
