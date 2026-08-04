@@ -63,6 +63,8 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<ISupplierService, SupplierService>();
         services.AddScoped<IPurchaseOrderService, PurchaseOrderService>();
         services.AddScoped<IGoodsReceiptService, GoodsReceiptService>();
+        services.AddScoped<IWarehouseService, WarehouseService>();
+        services.AddScoped<IWarehouseLocationService, WarehouseLocationService>();
 
         // JWT
         services.Configure<JwtSettings>(

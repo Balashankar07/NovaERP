@@ -31,6 +31,9 @@ public interface IUnitOfWork
     IPurchaseOrderRepository PurchaseOrders { get; }
 
     IGoodsReceiptRepository GoodsReceipts { get; }
+    
+    IWarehouseRepository Warehouses { get; }
+    IWarehouseLocationRepository WarehouseLocations { get; }
 
     Task<int> SaveChangesAsync();
     

@@ -113,7 +113,15 @@ public static class DbSeeder
             new() { Name = "Permissions.GoodsReceipts.Delete", Description = "Delete Goods Receipts", Module = "GoodsReceipts" },
             new() { Name = "Permissions.GoodsReceipts.Receive", Description = "Receive Goods Receipts", Module = "GoodsReceipts" },
             new() { Name = "Permissions.GoodsReceipts.Complete", Description = "Complete Goods Receipts", Module = "GoodsReceipts" },
-            new() { Name = "Permissions.GoodsReceipts.Cancel", Description = "Cancel Goods Receipts", Module = "GoodsReceipts" }
+            new() { Name = "Permissions.GoodsReceipts.Cancel", Description = "Cancel Goods Receipts", Module = "GoodsReceipts" },
+            new() { Name = "Permissions.Warehouses.View", Description = "View Warehouses", Module = "WarehouseManagement" },
+            new() { Name = "Permissions.Warehouses.Create", Description = "Create Warehouses", Module = "WarehouseManagement" },
+            new() { Name = "Permissions.Warehouses.Update", Description = "Edit Warehouses", Module = "WarehouseManagement" },
+            new() { Name = "Permissions.Warehouses.Delete", Description = "Delete Warehouses", Module = "WarehouseManagement" },
+            new() { Name = "Permissions.WarehouseLocations.View", Description = "View Warehouse Locations", Module = "WarehouseManagement" },
+            new() { Name = "Permissions.WarehouseLocations.Create", Description = "Create Warehouse Locations", Module = "WarehouseManagement" },
+            new() { Name = "Permissions.WarehouseLocations.Update", Description = "Edit Warehouse Locations", Module = "WarehouseManagement" },
+            new() { Name = "Permissions.WarehouseLocations.Delete", Description = "Delete Warehouse Locations", Module = "WarehouseManagement" }
         };
 
         foreach (var p in permissions)
