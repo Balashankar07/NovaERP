@@ -15,6 +15,11 @@ public class UnitOfWork : IUnitOfWork
     public IRolePermissionRepository RolePermissions { get; private set; }
     public IAuditLogRepository AuditLogs { get; private set; }
 
+    public IProductCategoryRepository ProductCategories { get; private set; }
+    public IBrandRepository Brands { get; private set; }
+    public IUnitRepository Units { get; private set; }
+    public IProductRepository Products { get; private set; }
+
     public UnitOfWork(
         AppDbContext context,
         IUserRepository userRepository,
@@ -22,7 +27,11 @@ public class UnitOfWork : IUnitOfWork
         ICompanyRepository companyRepository,
         IPermissionRepository permissionRepository,
         IRolePermissionRepository rolePermissionRepository,
-        IAuditLogRepository auditLogRepository)
+        IAuditLogRepository auditLogRepository,
+        IProductCategoryRepository productCategoryRepository,
+        IBrandRepository brandRepository,
+        IUnitRepository unitRepository,
+        IProductRepository productRepository)
     {
         _context = context;
         Users = userRepository;
@@ -31,10 +40,15 @@ public class UnitOfWork : IUnitOfWork
         Permissions = permissionRepository;
         RolePermissions = rolePermissionRepository;
         AuditLogs = auditLogRepository;
+
+        ProductCategories = productCategoryRepository;
+        Brands = brandRepository;
+        Units = unitRepository;
+        Products = productRepository;
     }
 
     public async Task<int> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync();
     }
-}   
+}

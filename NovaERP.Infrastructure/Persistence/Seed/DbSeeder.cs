@@ -58,24 +58,47 @@ public static class DbSeeder
         // ==========================
         // Seed Permissions
         // ==========================
-        if (!await context.Permissions.AnyAsync())
+        var permissions = new List<Permission>
         {
-            var permissions = new List<Permission>
-            {
-                new() { Name = "Permissions.Users.View", Description = "View Users", Module = "Users" },
-                new() { Name = "Permissions.Users.Create", Description = "Create Users", Module = "Users" },
-                new() { Name = "Permissions.Users.Edit", Description = "Edit Users", Module = "Users" },
-                new() { Name = "Permissions.Users.Delete", Description = "Delete Users", Module = "Users" },
-                new() { Name = "Permissions.Roles.View", Description = "View Roles", Module = "Roles" },
-                new() { Name = "Permissions.Roles.Create", Description = "Create Roles", Module = "Roles" },
-                new() { Name = "Permissions.Roles.Edit", Description = "Edit Roles", Module = "Roles" },
-                new() { Name = "Permissions.Roles.Delete", Description = "Delete Roles", Module = "Roles" },
-                new() { Name = "Permissions.Dashboard.View", Description = "View Dashboard", Module = "Dashboard" }
-            };
+            new() { Name = "Permissions.Users.View", Description = "View Users", Module = "Users" },
+            new() { Name = "Permissions.Users.Create", Description = "Create Users", Module = "Users" },
+            new() { Name = "Permissions.Users.Edit", Description = "Edit Users", Module = "Users" },
+            new() { Name = "Permissions.Users.Delete", Description = "Delete Users", Module = "Users" },
+            new() { Name = "Permissions.Roles.View", Description = "View Roles", Module = "Roles" },
+            new() { Name = "Permissions.Roles.Create", Description = "Create Roles", Module = "Roles" },
+            new() { Name = "Permissions.Roles.Edit", Description = "Edit Roles", Module = "Roles" },
+            new() { Name = "Permissions.Roles.Delete", Description = "Delete Roles", Module = "Roles" },
+            new() { Name = "Permissions.Dashboard.View", Description = "View Dashboard", Module = "Dashboard" },
+            
+            new() { Name = "Permissions.Products.View", Description = "View Products", Module = "Products" },
+            new() { Name = "Permissions.Products.Create", Description = "Create Products", Module = "Products" },
+            new() { Name = "Permissions.Products.Update", Description = "Edit Products", Module = "Products" },
+            new() { Name = "Permissions.Products.Delete", Description = "Delete Products", Module = "Products" },
 
-            await context.Permissions.AddRangeAsync(permissions);
-            await context.SaveChangesAsync();
+            new() { Name = "Permissions.ProductCategories.View", Description = "View Product Categories", Module = "Products" },
+            new() { Name = "Permissions.ProductCategories.Create", Description = "Create Product Categories", Module = "Products" },
+            new() { Name = "Permissions.ProductCategories.Update", Description = "Edit Product Categories", Module = "Products" },
+            new() { Name = "Permissions.ProductCategories.Delete", Description = "Delete Product Categories", Module = "Products" },
+
+            new() { Name = "Permissions.Brands.View", Description = "View Brands", Module = "Products" },
+            new() { Name = "Permissions.Brands.Create", Description = "Create Brands", Module = "Products" },
+            new() { Name = "Permissions.Brands.Update", Description = "Edit Brands", Module = "Products" },
+            new() { Name = "Permissions.Brands.Delete", Description = "Delete Brands", Module = "Products" },
+
+            new() { Name = "Permissions.Units.View", Description = "View Units", Module = "Products" },
+            new() { Name = "Permissions.Units.Create", Description = "Create Units", Module = "Products" },
+            new() { Name = "Permissions.Units.Update", Description = "Edit Units", Module = "Products" },
+            new() { Name = "Permissions.Units.Delete", Description = "Delete Units", Module = "Products" }
+        };
+
+        foreach (var p in permissions)
+        {
+            if (!await context.Permissions.AnyAsync(x => x.Name == p.Name))
+            {
+                await context.Permissions.AddAsync(p);
+            }
         }
+        await context.SaveChangesAsync();
 
         // ==========================
         // Seed Admin User
@@ -107,16 +130,75 @@ public static class DbSeeder
         // Seed Super Admin Role Permissions
         // ==========================
         var superAdmin = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Super Admin");
-        if (superAdmin != null && !await context.RolePermissions.AnyAsync(rp => rp.RoleId == superAdmin.Id))
+        if (superAdmin != null)
         {
             var allPermissions = await context.Permissions.ToListAsync();
-            var rolePermissions = allPermissions.Select(p => new RolePermission
-            {
-                RoleId = superAdmin.Id,
-                PermissionId = p.Id
-            }).ToList();
+            var existingRolePermissions = await context.RolePermissions
+                .Where(rp => rp.RoleId == superAdmin.Id)
+                .Select(rp => rp.PermissionId)
+                .ToListAsync();
 
-            await context.RolePermissions.AddRangeAsync(rolePermissions);
+            var newRolePermissions = allPermissions
+                .Where(p => !existingRolePermissions.Contains(p.Id))
+                .Select(p => new RolePermission
+                {
+                    RoleId = superAdmin.Id,
+                    PermissionId = p.Id
+                }).ToList();
+
+            if (newRolePermissions.Any())
+            {
+                await context.RolePermissions.AddRangeAsync(newRolePermissions);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        // ==========================
+        // Seed Product Categories
+        // ==========================
+        if (!await context.ProductCategories.AnyAsync())
+        {
+            var categories = new List<ProductCategory>
+            {
+                new() { Name = "Electronics", Description = "Electronic Devices and Accessories" },
+                new() { Name = "Computers", Description = "Laptops, Desktops and Peripherals" },
+                new() { Name = "Home Appliances", Description = "Appliances for Home" }
+            };
+
+            await context.ProductCategories.AddRangeAsync(categories);
+            await context.SaveChangesAsync();
+        }
+
+        // ==========================
+        // Seed Brands
+        // ==========================
+        if (!await context.Brands.AnyAsync())
+        {
+            var brands = new List<Brand>
+            {
+                new() { Name = "Apple", Description = "Apple Inc." },
+                new() { Name = "Samsung", Description = "Samsung Electronics" },
+                new() { Name = "Sony", Description = "Sony Corporation" },
+                new() { Name = "Dell", Description = "Dell Technologies" }
+            };
+
+            await context.Brands.AddRangeAsync(brands);
+            await context.SaveChangesAsync();
+        }
+
+        // ==========================
+        // Seed Units
+        // ==========================
+        if (!await context.Units.AnyAsync())
+        {
+            var units = new List<Unit>
+            {
+                new() { Name = "Piece", Abbreviation = "pcs" },
+                new() { Name = "Box", Abbreviation = "box" },
+                new() { Name = "Kilogram", Abbreviation = "kg" }
+            };
+
+            await context.Units.AddRangeAsync(units);
             await context.SaveChangesAsync();
         }
     }

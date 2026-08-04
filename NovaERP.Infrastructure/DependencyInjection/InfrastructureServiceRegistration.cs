@@ -35,6 +35,11 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
         services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+        
+        services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+        services.AddScoped<IBrandRepository, BrandRepository>();
+        services.AddScoped<IUnitRepository, UnitRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
 
         // Service Registration
         services.AddScoped<ICompanyService, CompanyService>();
@@ -45,6 +50,11 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<ICurrentUserPermissionService, CurrentUserPermissionService>();
         services.AddScoped<IAuditLogger, AuditLogger>();
         services.AddScoped<IAuditLogService, AuditLogService>();
+
+        services.AddScoped<IProductCategoryService, ProductCategoryService>();
+        services.AddScoped<IBrandService, BrandService>();
+        services.AddScoped<IUnitService, UnitService>();
+        services.AddScoped<IProductService, ProductService>();
 
         // JWT
         services.Configure<JwtSettings>(

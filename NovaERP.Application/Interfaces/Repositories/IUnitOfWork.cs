@@ -14,5 +14,13 @@ public interface IUnitOfWork
 
     IAuditLogRepository AuditLogs { get; }
 
+    IProductCategoryRepository ProductCategories { get; }
+
+    IBrandRepository Brands { get; }
+
+    IUnitRepository Units { get; }
+
+    IProductRepository Products { get; }
+
     Task<int> SaveChangesAsync();
 }

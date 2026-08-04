@@ -17,6 +17,11 @@ namespace NovaERP.Infrastructure.Persistence.Context
         public DbSet<Permission> Permissions => Set<Permission>();
         public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
         public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+        
+        public DbSet<ProductCategory> ProductCategories => Set<ProductCategory>();
+        public DbSet<Brand> Brands => Set<Brand>();
+        public DbSet<Unit> Units => Set<Unit>();
+        public DbSet<Product> Products => Set<Product>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
