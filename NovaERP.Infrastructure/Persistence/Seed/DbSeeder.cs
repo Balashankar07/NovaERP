@@ -173,7 +173,17 @@ public static class DbSeeder
             new() { Name = "Permissions.Shipments.Delete", Description = "Delete Shipments", Module = "DistributionLogistics" },
             new() { Name = "Permissions.Shipments.Dispatch", Description = "Dispatch Shipments", Module = "DistributionLogistics" },
             new() { Name = "Permissions.Shipments.Deliver", Description = "Deliver Shipments", Module = "DistributionLogistics" },
-            new() { Name = "Permissions.Shipments.Cancel", Description = "Cancel Shipments", Module = "DistributionLogistics" }
+            new() { Name = "Permissions.Shipments.Cancel", Description = "Cancel Shipments", Module = "DistributionLogistics" },
+            
+            new() { Name = "Permissions.Warranties.View", Description = "View Warranties", Module = "WarrantyServiceManagement" },
+            new() { Name = "Permissions.Warranties.Create", Description = "Create Warranties", Module = "WarrantyServiceManagement" },
+            new() { Name = "Permissions.Warranties.Update", Description = "Edit Warranties", Module = "WarrantyServiceManagement" },
+            new() { Name = "Permissions.Warranties.Delete", Description = "Delete Warranties", Module = "WarrantyServiceManagement" },
+            new() { Name = "Permissions.Warranties.Claim", Description = "Create Warranty Claim", Module = "WarrantyServiceManagement" },
+            new() { Name = "Permissions.Warranties.Approve", Description = "Approve Warranty Claim", Module = "WarrantyServiceManagement" },
+            new() { Name = "Permissions.Warranties.Reject", Description = "Reject Warranty Claim", Module = "WarrantyServiceManagement" },
+            new() { Name = "Permissions.Warranties.Resolve", Description = "Resolve Warranty Claim", Module = "WarrantyServiceManagement" },
+            new() { Name = "Permissions.Warranties.Close", Description = "Close Warranty or Claim", Module = "WarrantyServiceManagement" }
         };
 
         foreach (var p in permissions)

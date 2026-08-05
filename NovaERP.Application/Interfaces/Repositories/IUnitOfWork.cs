@@ -47,6 +47,8 @@ public interface IUnitOfWork
     ISalesOrderRepository SalesOrders { get; }
     IShipmentRepository Shipments { get; }
     IRepository<Distributor> Distributors { get; }
+    IWarrantyRepository Warranties { get; }
+    IWarrantyClaimRepository WarrantyClaims { get; }
     
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     

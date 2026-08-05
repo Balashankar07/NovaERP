@@ -6,6 +6,7 @@ using NovaERP.Application.Features.Users.Services;
 using NovaERP.Application.Interfaces;
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Application.Interfaces.Services;
+using NovaERP.Application.Services;
 
 using NovaERP.Infrastructure.Identity.JWT;
 using NovaERP.Infrastructure.Identity.Security;
@@ -51,6 +52,8 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IQualityInspectionRepository, QualityInspectionRepository>();
         services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
         services.AddScoped<IShipmentRepository, ShipmentRepository>();
+        services.AddScoped<IWarrantyRepository, WarrantyRepository>();
+        services.AddScoped<IWarrantyClaimRepository, WarrantyClaimRepository>();
 
         // Service Registration
         services.AddScoped<ICompanyService, CompanyService>();
@@ -79,6 +82,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IQualityInspectionService, QualityInspectionService>();
         services.AddScoped<ISalesOrderService, SalesOrderService>();
         services.AddScoped<IShipmentService, ShipmentService>();
+        services.AddScoped<IWarrantyService, WarrantyService>();
 
         // JWT
         services.Configure<JwtSettings>(

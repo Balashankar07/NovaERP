@@ -50,6 +50,10 @@ namespace NovaERP.Infrastructure.Persistence.Context
         public DbSet<Shipment> Shipments { get; set; } = null!;
         public DbSet<ShipmentItem> ShipmentItems { get; set; } = null!;
 
+        // Warranty Management
+        public DbSet<Warranty> Warranties { get; set; } = null!;
+        public DbSet<WarrantyClaim> WarrantyClaims { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

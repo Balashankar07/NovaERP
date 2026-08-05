@@ -38,7 +38,8 @@ public class UnitOfWork : IUnitOfWork
     public ISalesOrderRepository SalesOrders { get; private set; }
     public IRepository<Distributor> Distributors { get; private set; }
     public IShipmentRepository Shipments { get; private set; }
-
+    public IWarrantyRepository Warranties { get; private set; }
+    public IWarrantyClaimRepository WarrantyClaims { get; private set; }
     public UnitOfWork(
         AppDbContext context,
         IUserRepository userRepository,
@@ -85,6 +86,8 @@ public class UnitOfWork : IUnitOfWork
         SalesOrders = new SalesOrderRepository(_context);
         Distributors = new Repository<Distributor>(_context);
         Shipments = new ShipmentRepository(_context);
+        Warranties = new WarrantyRepository(_context);
+        WarrantyClaims = new WarrantyClaimRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
