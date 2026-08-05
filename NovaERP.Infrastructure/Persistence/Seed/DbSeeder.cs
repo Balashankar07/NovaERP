@@ -132,7 +132,16 @@ public static class DbSeeder
             new() { Name = "Permissions.ProductionPlans.Create", Description = "Create Production Plans", Module = "ProductionPlanning" },
             new() { Name = "Permissions.ProductionPlans.Update", Description = "Edit Production Plans", Module = "ProductionPlanning" },
             new() { Name = "Permissions.ProductionPlans.Delete", Description = "Delete Production Plans", Module = "ProductionPlanning" },
-            new() { Name = "Permissions.ProductionPlans.Release", Description = "Release Production Plans", Module = "ProductionPlanning" }
+            new() { Name = "Permissions.ProductionPlans.Release", Description = "Release Production Plans", Module = "ProductionPlanning" },
+
+            new() { Name = "Permissions.ProductionOrders.View", Description = "View Production Orders", Module = "ProductionOrders" },
+            new() { Name = "Permissions.ProductionOrders.Create", Description = "Create Production Orders", Module = "ProductionOrders" },
+            new() { Name = "Permissions.ProductionOrders.Update", Description = "Edit Production Orders", Module = "ProductionOrders" },
+            new() { Name = "Permissions.ProductionOrders.Delete", Description = "Delete Production Orders", Module = "ProductionOrders" },
+            new() { Name = "Permissions.ProductionOrders.Release", Description = "Release Production Orders", Module = "ProductionOrders" },
+            new() { Name = "Permissions.ProductionOrders.Start", Description = "Start Production Orders", Module = "ProductionOrders" },
+            new() { Name = "Permissions.ProductionOrders.Complete", Description = "Complete Production Orders", Module = "ProductionOrders" },
+            new() { Name = "Permissions.ProductionOrders.Cancel", Description = "Cancel Production Orders", Module = "ProductionOrders" }
         };
 
         foreach (var p in permissions)

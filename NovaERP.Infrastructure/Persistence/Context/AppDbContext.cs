@@ -35,6 +35,7 @@ namespace NovaERP.Infrastructure.Persistence.Context
         public DbSet<InventoryTransaction> InventoryTransactions { get; set; } = null!;
         public DbSet<ProductionPlan> ProductionPlans { get; set; } = null!;
         public DbSet<ProductionRequirement> ProductionRequirements { get; set; } = null!;
+        public DbSet<ProductionOrder> ProductionOrders { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

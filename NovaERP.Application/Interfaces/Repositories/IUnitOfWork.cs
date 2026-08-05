@@ -38,6 +38,7 @@ public interface IUnitOfWork
     IInventoryRepository Inventories { get; }
     IInventoryTransactionRepository InventoryTransactions { get; }
     IProductionPlanRepository ProductionPlans { get; }
+    IProductionOrderRepository ProductionOrders { get; }
 
     Task<int> SaveChangesAsync();
     

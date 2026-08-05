@@ -44,6 +44,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IBOMItemRepository, BOMItemRepository>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IPurchaseOrderRepository, PurchaseOrderRepository>();
+        services.AddScoped<IProductionOrderRepository, ProductionOrderRepository>();
 
         // Service Registration
         services.AddScoped<ICompanyService, CompanyService>();
@@ -67,6 +68,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IWarehouseLocationService, WarehouseLocationService>();
         services.AddScoped<IInventoryService, InventoryService>();
         services.AddScoped<IProductionPlanService, ProductionPlanService>();
+        services.AddScoped<IProductionOrderService, ProductionOrderService>();
 
         // JWT
         services.Configure<JwtSettings>(
