@@ -31,6 +31,8 @@ public class UnitOfWork : IUnitOfWork
     public IInventoryTransactionRepository InventoryTransactions { get; private set; }
     public IProductionPlanRepository ProductionPlans { get; private set; }
     public IProductionOrderRepository ProductionOrders { get; private set; }
+    public IProductionExecutionRepository ProductionExecutions { get; private set; }
+    public IMaterialConsumptionRepository MaterialConsumptions { get; private set; }
 
     public UnitOfWork(
         AppDbContext context,
@@ -46,7 +48,8 @@ public class UnitOfWork : IUnitOfWork
         IProductRepository productRepository,
         IBOMRepository bomRepository,
         IBOMItemRepository bomItemRepository,
-        ISupplierRepository supplierRepository)
+        ISupplierRepository supplierRepository,
+        IProductionOrderRepository productionOrderRepository)
     {
         _context = context;
         Users = userRepository;
@@ -70,7 +73,9 @@ public class UnitOfWork : IUnitOfWork
         Inventories = new InventoryRepository(_context);
         InventoryTransactions = new InventoryTransactionRepository(_context);
         ProductionPlans = new ProductionPlanRepository(_context);
-        ProductionOrders = new ProductionOrderRepository(_context);
+        ProductionOrders = productionOrderRepository;
+        ProductionExecutions = new ProductionExecutionRepository(_context);
+        MaterialConsumptions = new MaterialConsumptionRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync()

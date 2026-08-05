@@ -13,6 +13,8 @@ public class ProductionOrder : AuditableEntity
     public Guid ProductId { get; set; }
     public Product Product { get; set; } = null!;
 
+    public ICollection<ProductionExecution> ProductionExecutions { get; set; } = new List<ProductionExecution>();
+
     public decimal PlannedQuantity { get; set; }
     public decimal StartedQuantity { get; set; }
     public decimal CompletedQuantity { get; set; }

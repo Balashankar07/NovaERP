@@ -36,6 +36,8 @@ namespace NovaERP.Infrastructure.Persistence.Context
         public DbSet<ProductionPlan> ProductionPlans { get; set; } = null!;
         public DbSet<ProductionRequirement> ProductionRequirements { get; set; } = null!;
         public DbSet<ProductionOrder> ProductionOrders { get; set; } = null!;
+        public DbSet<ProductionExecution> ProductionExecutions { get; set; } = null!;
+        public DbSet<MaterialConsumption> MaterialConsumptions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
