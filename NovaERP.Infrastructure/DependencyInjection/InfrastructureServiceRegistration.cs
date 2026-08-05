@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using NovaERP.Application.Features.Users.Services;
+using NovaERP.Application.Interfaces;
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Application.Interfaces.Services;
 
@@ -47,6 +48,8 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IProductionOrderRepository, ProductionOrderRepository>();
         services.AddScoped<IProductionExecutionRepository, ProductionExecutionRepository>();
         services.AddScoped<IMaterialConsumptionRepository, MaterialConsumptionRepository>();
+        services.AddScoped<IQualityInspectionRepository, QualityInspectionRepository>();
+        services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
 
         // Service Registration
         services.AddScoped<ICompanyService, CompanyService>();
@@ -72,6 +75,8 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IProductionPlanService, ProductionPlanService>();
         services.AddScoped<IProductionOrderService, ProductionOrderService>();
         services.AddScoped<IProductionExecutionService, ProductionExecutionService>();
+        services.AddScoped<IQualityInspectionService, QualityInspectionService>();
+        services.AddScoped<ISalesOrderService, SalesOrderService>();
 
         // JWT
         services.Configure<JwtSettings>(

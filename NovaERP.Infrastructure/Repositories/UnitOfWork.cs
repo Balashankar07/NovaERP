@@ -1,7 +1,8 @@
 using NovaERP.Application.Interfaces.Repositories;
 using NovaERP.Infrastructure.Persistence.Context;
-using NovaERP.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using NovaERP.Domain.Entities;
+using NovaERP.Application.Interfaces;
 
 namespace NovaERP.Infrastructure.Repositories;
 
@@ -34,6 +35,8 @@ public class UnitOfWork : IUnitOfWork
     public IProductionExecutionRepository ProductionExecutions { get; private set; }
     public IMaterialConsumptionRepository MaterialConsumptions { get; private set; }
     public IQualityInspectionRepository QualityInspections { get; private set; }
+    public ISalesOrderRepository SalesOrders { get; private set; }
+    public IRepository<Distributor> Distributors { get; private set; }
 
     public UnitOfWork(
         AppDbContext context,
@@ -78,11 +81,13 @@ public class UnitOfWork : IUnitOfWork
         ProductionExecutions = new ProductionExecutionRepository(_context);
         MaterialConsumptions = new MaterialConsumptionRepository(_context);
         QualityInspections = new QualityInspectionRepository(_context);
+        SalesOrders = new SalesOrderRepository(_context);
+        Distributors = new Repository<Distributor>(_context);
     }
 
-    public async Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return await _context.SaveChangesAsync();
+        return await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task BeginTransactionAsync()

@@ -41,6 +41,11 @@ namespace NovaERP.Infrastructure.Persistence.Context
         public DbSet<QualityInspection> QualityInspections { get; set; } = null!;
         public DbSet<QualityDefect> QualityDefects { get; set; } = null!;
 
+        // Sales Management
+        public DbSet<Distributor> Distributors { get; set; } = null!;
+        public DbSet<SalesOrder> SalesOrders { get; set; } = null!;
+        public DbSet<SalesOrderItem> SalesOrderItems { get; set; } = null!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

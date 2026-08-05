@@ -1,3 +1,5 @@
+using NovaERP.Domain.Entities;
+
 namespace NovaERP.Application.Interfaces.Repositories;
 
 public interface IUnitOfWork
@@ -42,8 +44,10 @@ public interface IUnitOfWork
     IProductionExecutionRepository ProductionExecutions { get; }
     IMaterialConsumptionRepository MaterialConsumptions { get; }
     IQualityInspectionRepository QualityInspections { get; }
-
-    Task<int> SaveChangesAsync();
+    ISalesOrderRepository SalesOrders { get; }
+    IRepository<Distributor> Distributors { get; }
+    
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     
     Task BeginTransactionAsync();
     Task CommitTransactionAsync();
