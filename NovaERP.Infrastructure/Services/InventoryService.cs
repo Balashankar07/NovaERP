@@ -145,6 +145,53 @@ public class InventoryService : IInventoryService
         return defaultWarehouse.Id;
     }
 
+    public async Task ProcessSalesDispatchAsync(Guid shipmentId, Guid? currentUserId)
+    {
+        var shipment = await _unitOfWork.Shipments.GetShipmentWithDetailsAsync(shipmentId);
+        if (shipment == null)
+            throw new Exception($"Shipment with ID {shipmentId} not found.");
+
+        var warehouseId = await GetDefaultWarehouseIdAsync();
+
+        foreach (var item in shipment.ShipmentItems)
+        {
+            if (item.Quantity <= 0) continue;
+
+            var inventory = await _unitOfWork.Inventories.GetByProductAndLocationAsync(item.ProductId, warehouseId, null);
+
+            if (inventory == null || inventory.QuantityAvailable < item.Quantity)
+                throw new Exception($"Insufficient inventory for Product ID {item.ProductId}. Required: {item.Quantity}, Available: {inventory?.QuantityAvailable ?? 0}");
+
+            var oldQty = inventory.QuantityOnHand;
+            inventory.QuantityOnHand -= item.Quantity;
+            inventory.QuantityAvailable = inventory.QuantityOnHand - inventory.QuantityReserved;
+            inventory.LastStockUpdate = DateTime.UtcNow;
+
+            _unitOfWork.Inventories.Update(inventory);
+            await _unitOfWork.SaveChangesAsync();
+
+            await _auditLogger.LogAsync("Update", "Inventory", inventory.Id.ToString(),
+                oldValues: $"QuantityOnHand: {oldQty}",
+                newValues: $"QuantityOnHand: {inventory.QuantityOnHand}");
+
+            var transaction = new InventoryTransaction
+            {
+                InventoryId = inventory.Id,
+                TransactionType = InventoryTransactionType.SalesIssue,
+                ReferenceType = InventoryReferenceType.SalesOrder,
+                ReferenceId = shipmentId,
+                Quantity = -item.Quantity,
+                BalanceAfter = inventory.QuantityOnHand,
+                Remarks = $"Dispatched for Shipment: {shipment.TrackingNumber}",
+                CreatedBy = currentUserId,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _unitOfWork.InventoryTransactions.AddTransactionAsync(transaction);
+            await _unitOfWork.SaveChangesAsync();
+        }
+    }
+
     private static InventoryDto MapToDto(Inventory inv) => new()
     {
         Id = inv.Id,

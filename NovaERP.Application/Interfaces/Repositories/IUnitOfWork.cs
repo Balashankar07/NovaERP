@@ -45,6 +45,7 @@ public interface IUnitOfWork
     IMaterialConsumptionRepository MaterialConsumptions { get; }
     IQualityInspectionRepository QualityInspections { get; }
     ISalesOrderRepository SalesOrders { get; }
+    IShipmentRepository Shipments { get; }
     IRepository<Distributor> Distributors { get; }
     
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

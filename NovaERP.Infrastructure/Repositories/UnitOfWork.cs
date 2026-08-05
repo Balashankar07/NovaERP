@@ -37,6 +37,7 @@ public class UnitOfWork : IUnitOfWork
     public IQualityInspectionRepository QualityInspections { get; private set; }
     public ISalesOrderRepository SalesOrders { get; private set; }
     public IRepository<Distributor> Distributors { get; private set; }
+    public IShipmentRepository Shipments { get; private set; }
 
     public UnitOfWork(
         AppDbContext context,
@@ -83,6 +84,7 @@ public class UnitOfWork : IUnitOfWork
         QualityInspections = new QualityInspectionRepository(_context);
         SalesOrders = new SalesOrderRepository(_context);
         Distributors = new Repository<Distributor>(_context);
+        Shipments = new ShipmentRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

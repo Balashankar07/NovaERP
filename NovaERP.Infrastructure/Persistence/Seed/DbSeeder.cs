@@ -165,7 +165,15 @@ public static class DbSeeder
             new() { Name = "Permissions.SalesOrders.Delete", Description = "Delete Sales Orders", Module = "SalesManagement" },
             new() { Name = "Permissions.SalesOrders.Submit", Description = "Submit Sales Orders", Module = "SalesManagement" },
             new() { Name = "Permissions.SalesOrders.Approve", Description = "Approve Sales Orders", Module = "SalesManagement" },
-            new() { Name = "Permissions.SalesOrders.Cancel", Description = "Cancel Sales Orders", Module = "SalesManagement" }
+            new() { Name = "Permissions.SalesOrders.Cancel", Description = "Cancel Sales Orders", Module = "SalesManagement" },
+
+            new() { Name = "Permissions.Shipments.View", Description = "View Shipments", Module = "DistributionLogistics" },
+            new() { Name = "Permissions.Shipments.Create", Description = "Create Shipments", Module = "DistributionLogistics" },
+            new() { Name = "Permissions.Shipments.Update", Description = "Edit Shipments", Module = "DistributionLogistics" },
+            new() { Name = "Permissions.Shipments.Delete", Description = "Delete Shipments", Module = "DistributionLogistics" },
+            new() { Name = "Permissions.Shipments.Dispatch", Description = "Dispatch Shipments", Module = "DistributionLogistics" },
+            new() { Name = "Permissions.Shipments.Deliver", Description = "Deliver Shipments", Module = "DistributionLogistics" },
+            new() { Name = "Permissions.Shipments.Cancel", Description = "Cancel Shipments", Module = "DistributionLogistics" }
         };
 
         foreach (var p in permissions)

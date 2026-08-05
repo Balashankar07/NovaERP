@@ -50,6 +50,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IMaterialConsumptionRepository, MaterialConsumptionRepository>();
         services.AddScoped<IQualityInspectionRepository, QualityInspectionRepository>();
         services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
+        services.AddScoped<IShipmentRepository, ShipmentRepository>();
 
         // Service Registration
         services.AddScoped<ICompanyService, CompanyService>();
@@ -77,6 +78,7 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<IProductionExecutionService, ProductionExecutionService>();
         services.AddScoped<IQualityInspectionService, QualityInspectionService>();
         services.AddScoped<ISalesOrderService, SalesOrderService>();
+        services.AddScoped<IShipmentService, ShipmentService>();
 
         // JWT
         services.Configure<JwtSettings>(

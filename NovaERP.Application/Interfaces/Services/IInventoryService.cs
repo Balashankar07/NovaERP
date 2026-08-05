@@ -17,4 +17,10 @@ public interface IInventoryService
     /// Creates or updates inventory records and appends transactions.
     /// </summary>
     Task ProcessGoodsReceiptAsync(Guid grnId, Guid? currentUserId);
+
+    /// <summary>
+    /// Called by ShipmentService when a Shipment is dispatched.
+    /// Deducts inventory and appends transactions.
+    /// </summary>
+    Task ProcessSalesDispatchAsync(Guid shipmentId, Guid? currentUserId);
 }
