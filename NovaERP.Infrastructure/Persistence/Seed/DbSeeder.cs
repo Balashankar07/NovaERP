@@ -149,7 +149,15 @@ public static class DbSeeder
             new() { Name = "Permissions.ProductionExecution.Start", Description = "Start Production Execution", Module = "ProductionExecution" },
             new() { Name = "Permissions.ProductionExecution.Consume", Description = "Consume Materials", Module = "ProductionExecution" },
             new() { Name = "Permissions.ProductionExecution.Complete", Description = "Complete Production Execution", Module = "ProductionExecution" },
-            new() { Name = "Permissions.ProductionExecution.Cancel", Description = "Cancel Production Execution", Module = "ProductionExecution" }
+            new() { Name = "Permissions.ProductionExecution.Cancel", Description = "Cancel Production Execution", Module = "ProductionExecution" },
+
+            new() { Name = "Permissions.QualityInspection.View", Description = "View Quality Inspection", Module = "QualityControl" },
+            new() { Name = "Permissions.QualityInspection.Create", Description = "Create Quality Inspection", Module = "QualityControl" },
+            new() { Name = "Permissions.QualityInspection.Update", Description = "Edit Quality Inspection", Module = "QualityControl" },
+            new() { Name = "Permissions.QualityInspection.Delete", Description = "Delete Quality Inspection", Module = "QualityControl" },
+            new() { Name = "Permissions.QualityInspection.Start", Description = "Start Quality Inspection", Module = "QualityControl" },
+            new() { Name = "Permissions.QualityInspection.Complete", Description = "Complete Quality Inspection", Module = "QualityControl" },
+            new() { Name = "Permissions.QualityInspection.Cancel", Description = "Cancel Quality Inspection", Module = "QualityControl" }
         };
 
         foreach (var p in permissions)

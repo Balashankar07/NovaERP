@@ -33,6 +33,7 @@ public class UnitOfWork : IUnitOfWork
     public IProductionOrderRepository ProductionOrders { get; private set; }
     public IProductionExecutionRepository ProductionExecutions { get; private set; }
     public IMaterialConsumptionRepository MaterialConsumptions { get; private set; }
+    public IQualityInspectionRepository QualityInspections { get; private set; }
 
     public UnitOfWork(
         AppDbContext context,
@@ -76,6 +77,7 @@ public class UnitOfWork : IUnitOfWork
         ProductionOrders = productionOrderRepository;
         ProductionExecutions = new ProductionExecutionRepository(_context);
         MaterialConsumptions = new MaterialConsumptionRepository(_context);
+        QualityInspections = new QualityInspectionRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync()

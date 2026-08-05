@@ -41,6 +41,7 @@ public interface IUnitOfWork
     IProductionOrderRepository ProductionOrders { get; }
     IProductionExecutionRepository ProductionExecutions { get; }
     IMaterialConsumptionRepository MaterialConsumptions { get; }
+    IQualityInspectionRepository QualityInspections { get; }
 
     Task<int> SaveChangesAsync();
     

@@ -1,0 +1,12 @@
+namespace NovaERP.Application.Features.QualityInspections.DTOs;
+
+public class QualityDefectDto
+{
+    public Guid Id { get; set; }
+    public Guid QualityInspectionId { get; set; }
+    public string DefectCode { get; set; } = string.Empty;
+    public string DefectName { get; set; } = string.Empty;
+    public decimal Quantity { get; set; }
+    public string? Severity { get; set; }
+    public string? Remarks { get; set; }
+}
