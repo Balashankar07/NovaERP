@@ -83,6 +83,8 @@ public static class InfrastructureServiceRegistration
         services.AddScoped<ISalesOrderService, SalesOrderService>();
         services.AddScoped<IShipmentService, ShipmentService>();
         services.AddScoped<IWarrantyService, WarrantyService>();
+        services.AddScoped<NovaERP.Application.Features.Reports.Interfaces.IReportRepository, NovaERP.Infrastructure.Repositories.Reports.ReportRepository>();
+        services.AddScoped<NovaERP.Application.Features.Reports.Interfaces.IReportService, NovaERP.Infrastructure.Services.ReportService>();
 
         // JWT
         services.Configure<JwtSettings>(

@@ -183,7 +183,15 @@ public static class DbSeeder
             new() { Name = "Permissions.Warranties.Approve", Description = "Approve Warranty Claim", Module = "WarrantyServiceManagement" },
             new() { Name = "Permissions.Warranties.Reject", Description = "Reject Warranty Claim", Module = "WarrantyServiceManagement" },
             new() { Name = "Permissions.Warranties.Resolve", Description = "Resolve Warranty Claim", Module = "WarrantyServiceManagement" },
-            new() { Name = "Permissions.Warranties.Close", Description = "Close Warranty or Claim", Module = "WarrantyServiceManagement" }
+            new() { Name = "Permissions.Warranties.Close", Description = "Close Warranty or Claim", Module = "WarrantyServiceManagement" },
+            
+            new() { Name = "Permissions.Reports.View", Description = "View Reports", Module = "Reports" },
+            new() { Name = "Permissions.Reports.Dashboard", Description = "View Dashboard Reports", Module = "Reports" },
+            new() { Name = "Permissions.Reports.Inventory", Description = "View Inventory Reports", Module = "Reports" },
+            new() { Name = "Permissions.Reports.Production", Description = "View Production Reports", Module = "Reports" },
+            new() { Name = "Permissions.Reports.Sales", Description = "View Sales Reports", Module = "Reports" },
+            new() { Name = "Permissions.Reports.Warranty", Description = "View Warranty Reports", Module = "Reports" },
+            new() { Name = "Permissions.Reports.Audit", Description = "View Audit Reports", Module = "Reports" }
         };
 
         foreach (var p in permissions)
